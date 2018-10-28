@@ -1,0 +1,32 @@
+{
+  "name": "whatsapp-clone",
+  "version": "1.0.0",
+  "description": "My project to understand how real time chat app works",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build1": "babel test -d dist",
+    "babel": "babel",
+    "babel-node": "babel-node",
+    "nodemon": "nodemon --exec npm run babel-node",
+    "eslint": "eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BJCheng/whatsapp-clone.git"
+  },
+  "author": "Ben-Jen Cheng",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BJCheng/whatsapp-clone/issues"
+  },
+  "homepage": "https://github.com/BJCheng/whatsapp-clone#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "eslint": "^5.8.0",
+    "eslint-plugin-react": "^7.11.1"
+  }
+}
