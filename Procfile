@@ -1,1 +1,1 @@
-web: node build/test-server.js
+web: node build/api-server.js
