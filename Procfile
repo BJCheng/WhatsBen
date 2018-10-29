@@ -1,1 +1,1 @@
-web: node dist/test-server.js
+web: node build/test-server.js
