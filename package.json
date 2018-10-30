@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src -d build",
+    "build-api": "rm -Rf build/api && babel src -d build/api",
     "babel": "babel",
     "babel-node": "babel-node",
     "nodemon": "nodemon --exec npm run babel-node",
     "eslint": "eslint",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build-api"
   },
   "engines": {
     "node": "8.6.0",
