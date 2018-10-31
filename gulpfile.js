@@ -9,7 +9,7 @@ const WebpackDevServer = require('webpack-dev-server');
 
 gulp.task('build-view', function (callback) {
 	let buildConfig = { ...webpackConfig };
-	buildConfig.mode = 'development';
+	buildConfig.mode = 'production';
 	buildConfig.plugins.push(new UglifyJsPlugin());
 	buildConfig.plugins.push(new webpack.DefinePlugin({
 		'process.env': {
@@ -29,8 +29,10 @@ gulp.task('build-view', function (callback) {
 });
 
 gulp.task('view-server', function () {
-	const compiler = webpack(webpackConfig);
-	const server = new WebpackDevServer(compiler, webpackConfig.devServer);
+	let devConfig = { ...webpackConfig };
+	devConfig.mode = 'development';
+	const compiler = webpack(devConfig);
+	const server = new WebpackDevServer(compiler, devConfig.devServer);
 	server.listen(5000, '0.0.0.0', function (err) {
 		if (err) {
 			console.log('could not start spa server');
