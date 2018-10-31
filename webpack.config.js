@@ -4,28 +4,38 @@ const path = require('path');
 
 module.exports = {
 	target: 'web',
-	debug: true,
+	// debug: true
 	devtool: 'source-map',
 	context: path.join(__dirname),
 	entry: {
-		app: './src/spa/app.js'
+		app: path.join(__dirname, 'src', 'view', 'app') //'./src/view/app.js'
 	},
 	output: {
-		path: path.join(__dirname, 'dist', 'spa'),
-		publicPath: '/dist/spa/',
+		path: path.join(__dirname, 'build', 'view'),
+		publicPath: '/build/view/',
 		filename: '[name].bundle.js'
 	},
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /src(\/|\\).*\.js$/,
 				exclude: /node_modules/,
-				loader: 'babel-loader',
-				query: {
-					presets: ['es2015', 'react']
+				use: {
+					loader: 'babel-loader',
+					options: {
+						presets: ['@babel/preset-env', '@babel/preset-react']
+					}
 				}
 			}
 		]
 	},
-	plugins: []
+	plugins: [],
+	mode: 'development',
+	devServer: {
+		contentBase: path.join(__dirname, 'www'),
+		quiet: false,
+		noInfo: false,
+		publicPath: '/build/view/',
+		stats: { chunks: false, colors: true }
+	}
 };
