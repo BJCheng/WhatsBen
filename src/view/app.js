@@ -1,4 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Incr from './incr.react';
 
-ReactDOM.render(<h1>Hello React!!!</h1>, document.getElementById('root'));
+ReactDOM.render(<Incr/>, document.getElementById('root'));

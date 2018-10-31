@@ -1,5 +1,4 @@
 'use strict';
-
 const path = require('path');
 
 module.exports = {
@@ -8,7 +7,7 @@ module.exports = {
 	devtool: 'source-map',
 	context: path.join(__dirname),
 	entry: {
-		app: path.join(__dirname, 'src', 'view', 'app') //'./src/view/app.js'
+		app: path.join(__dirname, 'src', 'view', 'app')
 	},
 	output: {
 		path: path.join(__dirname, 'build', 'view'),
@@ -30,7 +29,6 @@ module.exports = {
 		]
 	},
 	plugins: [],
-	mode: 'development',
 	devServer: {
 		contentBase: path.join(__dirname, 'www'),
 		quiet: false,
