@@ -1,7 +1,6 @@
 'use strict';
 /* eslint no-console: 0 */
 require('@babel/register');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const gulp = require('gulp');
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config.js');
@@ -10,7 +9,6 @@ const WebpackDevServer = require('webpack-dev-server');
 gulp.task('build-view', function (callback) {
 	let buildConfig = { ...webpackConfig };
 	buildConfig.mode = 'production';
-	buildConfig.plugins.push(new UglifyJsPlugin());
 	buildConfig.plugins.push(new webpack.DefinePlugin({
 		'process.env': {
 			'NODE_ENV': '"production"'
@@ -26,6 +24,7 @@ gulp.task('build-view', function (callback) {
 			callback();
 		}
 	});
+	// TODO: after finished webpack, push build/view/app... to chat-with-ben-site repo
 });
 
 gulp.task('view-server', function () {

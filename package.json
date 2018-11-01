@@ -4,7 +4,7 @@
   "description": "My project to understand how real time chat app works",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha ./src/**/__tests__/*.test.js --compilers js:@babel/register",
     "build-api": "rm -Rf build/api && babel src/api -d build/api",
     "babel": "babel",
     "babel-node": "babel-node",
@@ -39,10 +39,12 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
     "babel-loader": "^8.0.4",
+    "chai": "^4.2.0",
     "eslint": "^5.8.0",
     "eslint-plugin-react": "^7.11.1",
     "gulp": "^4.0.0",
     "gulp-babel": "^8.0.0",
+    "mocha": "^5.2.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "uglifyjs-webpack-plugin": "^2.0.1",
@@ -52,9 +54,11 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "express": "^4.16.4",
     "redis": "^2.8.0",
-    "url-join": "^4.0.0"
+    "url-join": "^4.0.0",
+    "validator": "^10.8.0"
   }
 }
