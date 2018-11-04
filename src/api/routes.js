@@ -1,5 +1,8 @@
 import { redisClient } from './redis-client';
 import { UserValidator } from '../core/user-validator';
+import jwt from 'jsonwebtoken';
+
+const handleSecret = 'random-secret';
 
 export default (app) => {
 	app.get('/', (req, res) => {
@@ -29,7 +32,6 @@ export default (app) => {
 	});
 
 	app.post('/user', (req, res, next) => {
-		console.log('user', req.body);
 		const { handle, name } = req.body;
 		const user = {
 			handle,
@@ -46,9 +48,20 @@ export default (app) => {
 					next(err);
 				}
 				else {
-					res.send(`User saved to redis. Number of users: ${result}.`);
+					const token = jwt.sign({handle}, handleSecret);
+					console.info(jwt);
+					res.json({
+						token: `Bearer ${token}`
+					});
 				}
 			});
 		}
+	});
+
+	app.get('verify', (req, res)=>{
+		const bearerToken  = req.header('Authorization');
+		const token = bearerToken.substring('Bearer '.length);
+		const decoded = jwt.verify(token, handleSecret);
+		res.send(decoded.handle);
 	});
 };
