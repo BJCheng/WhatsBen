@@ -3,11 +3,10 @@ const path = require('path');
 
 module.exports = {
 	target: 'web',
-	// debug: true
 	devtool: 'source-map',
 	context: path.join(__dirname),
 	entry: {
-		app: path.join(__dirname, 'src', 'view', 'app')
+		index: path.join(__dirname, 'src', 'view', 'index')
 	},
 	output: {
 		path: path.join(__dirname, 'build', 'view'),
@@ -17,7 +16,7 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /src(\/|\\).*\.js$/,
+				test: /src(\/|\\).*\.jsx?$/,
 				exclude: /node_modules/,
 				use: {
 					loader: 'babel-loader',

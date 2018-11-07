@@ -14,5 +14,5 @@ setupRedis();
 setupRoutes(app);
 
 app.listen(port, () => {
-	console.log(`Express app listening at port ${port}`);
+  console.log(`Express app listening at port ${port}`);
 });

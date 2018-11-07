@@ -7,37 +7,37 @@ const webpackConfig = require('./webpack.config.js');
 const WebpackDevServer = require('webpack-dev-server');
 
 gulp.task('build-view', function (callback) {
-	let buildConfig = { ...webpackConfig };
-	buildConfig.mode = 'production';
-	buildConfig.plugins.push(new webpack.DefinePlugin({
-		'process.env': {
-			'NODE_ENV': '"production"'
-		}
-	}));
+  let buildConfig = { ...webpackConfig };
+  buildConfig.mode = 'production';
+  buildConfig.plugins.push(new webpack.DefinePlugin({
+    'process.env': {
+      'NODE_ENV': '"production"'
+    }
+  }));
 
-	webpack(buildConfig, (err, stats) => {
-		if (err) {
-			callback(err);
-		}
-		else {
-			console.log(stats.toString({ chunks: false, colors: true }));
-			callback();
-		}
-	});
-	// TODO: after finished webpack, push build/view/app... to chat-with-ben-site repo
+  webpack(buildConfig, (err, stats) => {
+    if (err) {
+      callback(err);
+    }
+    else {
+      console.log(stats.toString({ chunks: false, colors: true }));
+      callback();
+    }
+  });
+  // TODO: after finished webpack, push build/view/app... to chat-with-ben-site repo
 });
 
 gulp.task('view-server', function () {
-	let devConfig = { ...webpackConfig };
-	devConfig.mode = 'development';
-	const compiler = webpack(devConfig);
-	const server = new WebpackDevServer(compiler, devConfig.devServer);
-	server.listen(5000, '0.0.0.0', function (err) {
-		if (err) {
-			console.log('could not start spa server');
-			console.error(err);
-		}
-	});
+  let devConfig = { ...webpackConfig };
+  devConfig.mode = 'development';
+  const compiler = webpack(devConfig);
+  const server = new WebpackDevServer(compiler, devConfig.devServer);
+  server.listen(5000, '0.0.0.0', function (err) {
+    if (err) {
+      console.log('could not start spa server');
+      console.error(err);
+    }
+  });
 });
 
 
