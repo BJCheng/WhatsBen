@@ -8,7 +8,6 @@ class MessageList extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.info(state);
   return ({
     messages: state.messageBody.messages
   });

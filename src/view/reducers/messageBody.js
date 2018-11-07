@@ -1,5 +1,5 @@
 const messageBodyInitialState = {
-  messages: ['1', '2']
+  messages: []
 };
 export default (state = messageBodyInitialState, action) => {
   switch (action.type) {
