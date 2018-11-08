@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Emoji from './emoji.jsx';
+import Input from './input.jsx';
 
-class Input extends React.Component {
+class Container extends React.Component {
   render() {
     return (
       <div>
-        {/* <Emoji />
-        <Input /> */}
+        <Emoji click={this.props.click}/>
+        <Input />
       </div>
     );
   }
@@ -27,4 +29,4 @@ const mapDispatchToProps = (dispatch, getState) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Input);
+)(Container);
