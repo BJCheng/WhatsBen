@@ -1,7 +1,7 @@
 import React from 'react';
-import Recipient from './header/recipient.jsx';
-import MessageList from './body/message-list.jsx';
-import Container from './footer/container.jsx';
+import Recipient from './recipient/recipient.jsx';
+import MessageList from './message-list/message-list.jsx';
+import InputContainer from './input/input-container.jsx';
 // import './normalize.scss';
 
 export default () => {
@@ -9,7 +9,7 @@ export default () => {
     <div>
       <Recipient />
       <MessageList />
-      <Container />
+      <InputContainer />
     </div>
   );
 };
