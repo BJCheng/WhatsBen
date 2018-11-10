@@ -1,5 +1,5 @@
 import React from 'react';
-import Recipient from './header/recipient.jsx';
+import HeaderContainer from './header/header-container.jsx';
 import BodyContainer from './body/body-container.jsx';
 import FooterContainer from './footer/footer-container.jsx';
 // import './normalize.scss';
@@ -7,7 +7,7 @@ import FooterContainer from './footer/footer-container.jsx';
 export default () => {
   return (
     <div>
-      <Recipient />
+      <HeaderContainer />
       <BodyContainer />
       <FooterContainer />
     </div>

@@ -37,6 +37,7 @@
         ],
         "no-console": [
             1
-        ]
+        ],
+        "react/jsx-uses-vars": 2
     }
 }
