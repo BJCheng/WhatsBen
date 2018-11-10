@@ -5,7 +5,7 @@ import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './reducers';
 import App from './components/App.jsx';
 import './normalize.scss';
-import stateLogger from './reducers/middlewares/stateLogger';
+import stateLogger from './reducers/middlewares/state-logger';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faGrin } from '@fortawesome/free-solid-svg-icons';
 import { BrowserRouter, Route } from 'react-router-dom';
