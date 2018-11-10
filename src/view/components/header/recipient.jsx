@@ -8,7 +8,7 @@ class Recipient extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { userId, firstName, lastName, thumbnailUrl, timestamp } = state.recipient;
+  const { userId, firstName, lastName, thumbnailUrl, timestamp } = state.header;
   return {
     userId,
     firstName,

@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import recipient from './recipient';
+import headerReducer from './header-reducer';
 import bodyReducer from './body-reducer';
 import footerReducer from './footer-reducer';
 
 export default combineReducers({
-  recipient,
+  header: headerReducer,
   body: bodyReducer,
   footer: footerReducer
 });
