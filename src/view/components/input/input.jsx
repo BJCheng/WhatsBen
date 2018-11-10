@@ -1,5 +1,10 @@
 import React from 'react';
 
 export default (props) => (
-  <div>123</div>
+  <input
+    type='text'
+    value={props.text}
+    onChange={props.onChange}
+    onKeyPress={props.onEnterPress}
+  />
 );
