@@ -5,6 +5,6 @@ export default (props) => (
     type='text'
     value={props.text}
     onChange={props.onChange}
-    onKeyPress={props.onEnterPress}
+    onKeyDown={props.onEnterPress}
   />
 );

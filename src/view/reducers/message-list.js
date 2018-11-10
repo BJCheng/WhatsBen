@@ -6,9 +6,7 @@ const messageBodyInitialState = {
 export default (state = messageBodyInitialState, action) => {
   switch (action.type) {
     case SEND_MESSAGE: {
-      const newMessages = [...state.messages];
-      newMessages.push(action.value);
-      return { ...state, newMessages };
+      return { ...state, messages: state.messages.concat(action.value) };
     }
     default:
       return state;

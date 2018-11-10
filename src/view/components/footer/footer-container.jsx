@@ -20,8 +20,9 @@ class InputContainer extends React.Component {
     );
   }
 
-  onEnterPress() {
-    console.info('onEnterPress:', this.props.text);
+  onEnterPress(e) {
+    if(e.key !== 'Enter') return;
+    this.props.sendMessage(this.props.text);
   }
 }
 
@@ -39,8 +40,8 @@ const mapDispatchToProps = (dispatch) => {
     onChange: (event) => {
       dispatch(changeInput(event.target.value));
     },
-    onEnterPress: () => {
-      dispatch(sendMessage(ownProps.inputs.text));
+    sendMessage: (text) => {
+      dispatch(sendMessage(text));
     }
   };
 };
