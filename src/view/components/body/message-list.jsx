@@ -9,7 +9,7 @@ class MessageList extends React.Component {
 
 const mapStateToProps = (state) => {
   return ({
-    messages: state.messageList.messages
+    messages: state.body.messages
   });
 };
 
