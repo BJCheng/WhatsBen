@@ -27,7 +27,7 @@ class InputContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  text: state.input.text
+  text: state.footer.text
 });
 
 const mapDispatchToProps = (dispatch) => {
