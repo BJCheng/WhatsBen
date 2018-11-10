@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Emoji from './emoji.jsx';
 import Input from './input.jsx';
-import { changeInput, sendMessage } from '../../actions';
+import { changeInput, sendMessage, clearInput } from '../../actions';
 
 class InputContainer extends Component {
   constructor(props) {
@@ -41,6 +41,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     sendMessage: (text) => {
       dispatch(sendMessage(text));
+      dispatch(clearInput());
     }
   };
 };
