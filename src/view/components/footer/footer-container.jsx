@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Emoji from './emoji.jsx';
 import Input from './input.jsx';
-import SendButton from './send-button.jsx';
 import { changeInput, sendMessage } from '../../actions';
 
-class InputContainer extends React.Component {
+class InputContainer extends Component {
   constructor(props) {
     super(props);
     this.onEnterPress = this.onEnterPress.bind(this);
@@ -21,7 +20,7 @@ class InputContainer extends React.Component {
   }
 
   onEnterPress(e) {
-    if(e.key !== 'Enter') return;
+    if (e.key !== 'Enter') return;
     this.props.sendMessage(this.props.text);
   }
 }
