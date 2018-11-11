@@ -1,0 +1,19 @@
+@import './footer-container.scss';
+@import './message-list.scss';
+@import './footer-container.scss';
+@import './message-list.scss';
+@import './header-container.scss';
+@import './input.scss';
+@import './emoji.scss';
+@import './message.scss';
+
+html, body, #root {
+  margin: 0;
+  height: 100%;
+}
+
+.app{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
