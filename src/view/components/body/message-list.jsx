@@ -1,4 +1,5 @@
 import React from 'react';
+import Message from './Message.jsx';
 
 export default class MessageList extends React.Component {
   constructor(props) {
@@ -6,15 +7,19 @@ export default class MessageList extends React.Component {
     this.renderMessage = this.renderMessage.bind(this);
   }
 
-  renderMessage(messages){
-    return messages.map((message)=>{
+  renderMessage(messages) {
+    return messages.map((message) => {
       return (
-        <div>{message}</div>
+        <Message text={message} />
       );
     });
   }
 
   render() {
-    return this.renderMessage(this.props.messages);
+    return (
+      <div className='message-list'>
+        {this.renderMessage(this.props.messages)}
+      </div>
+    );
   }
 }

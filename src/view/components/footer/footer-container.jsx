@@ -12,7 +12,7 @@ class InputContainer extends Component {
 
   render() {
     return (
-      <div>
+      <div className='footer-container'>
         <Emoji click={this.props.click} />
         <Input text={this.props.text} onChange={this.props.onChange} onEnterPress={this.onEnterPress} />
       </div>

@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Recipient from './recipient.jsx';
+import Thumbnail from './thumbnail.jsx';
 
 class HeaderContainer extends Component {
   render() {
-    return <Recipient />;
+    return (
+      <div className='header-container'>
+        <Thumbnail />
+        <Recipient />
+      </div>
+    );
   }
 }
 
