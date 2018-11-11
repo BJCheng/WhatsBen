@@ -9,4 +9,7 @@
   background-color: $background-khaki;
   overflow: auto;
   flex-basis: 100%;
+  
+  display: flex;
+  flex-direction: column;
 }

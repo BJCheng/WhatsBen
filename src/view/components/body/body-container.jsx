@@ -6,7 +6,7 @@ class BodyContainer extends Component {
   render() {
     return (
       <div className='body-container'>
-        < MessageList messages={this.props.messages} />
+        <MessageList messages={this.props.messages} />
       </div>
     );
   }
