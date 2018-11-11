@@ -1,5 +1,7 @@
+@import './colors.scss';
+
 .footer-container{
-  background-color: #EFEFEF;
+  background-color: $background-grey;
   display: flex;
   flex-direction: row;
 }
