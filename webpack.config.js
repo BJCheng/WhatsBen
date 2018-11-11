@@ -28,7 +28,42 @@ module.exports = {
       {
         test: /src(\/|\\).*\.scss$/,
         loaders: ['style-loader', 'css-loader', 'sass-loader']
-      }
+      },
+      {
+        test: /\.(png|jpg)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              bypassOnDebug: true, // webpack@1.x
+              disable: true, // webpack@2.x and newer
+              name: '[name].[ext]',
+              outputPath: 'images/',
+              publicPath: 'images/'
+            }
+          }
+        ]
+      },
+      // {
+      //   test: /\.(png|jpg)$/,
+      //   loader: 'url-loader'
+      // },
+      // {
+      //   test: /\.(gif|png|jpe?g|svg)$/,
+      //   use: [
+      //     'file-loader',
+      //     {
+      //       loader: 'image-webpack-loader',
+      //       options: {
+      //         bypassOnDebug: true, // webpack@1.x
+      //         disable: true, // webpack@2.x and newer
+      //         name: '[name].[ext]',
+      //         outputPath: 'images/',
+      //         publicPath: 'images/'
+      //       }
+      //     }
+      //   ]
+      // }
     ]
   },
   plugins: [],

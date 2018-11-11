@@ -1,7 +1,7 @@
 import { SEND_MESSAGE } from '../actions/types';
 
 const messageBodyInitialState = {
-  messages: []
+  messages: ['1', '2', '3', '4', '5', '6', '7', '8']
 };
 export default (state = messageBodyInitialState, action) => {
   switch (action.type) {

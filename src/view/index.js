@@ -7,16 +7,12 @@ import App from './components/App.jsx';
 import './normalize.scss';
 import stateLogger from './reducers/middlewares/state-logger';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faGrin } from '@fortawesome/free-solid-svg-icons';
+import { faGrin, faUser } from '@fortawesome/free-solid-svg-icons';
 import { BrowserRouter, Route } from 'react-router-dom';
+import './images/background.png';
 
-library.add(faGrin);
+library.add(faGrin, faUser);
 
-const initialState = {
-  recipientHeader: undefined,
-  messageBody: undefined,
-  inputFooter: undefined
-};
 const store = createStore(rootReducer, applyMiddleware(stateLogger));
 ReactDOM.render(
   <BrowserRouter>

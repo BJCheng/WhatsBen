@@ -1,11 +1,12 @@
-@import './footer-container.scss';
-@import './message-list.scss';
-@import './footer-container.scss';
-@import './message-list.scss';
 @import './header-container.scss';
+@import './body-container.scss';
+@import './footer-container.scss';
+@import './message-list.scss';
 @import './input.scss';
 @import './emoji.scss';
 @import './message.scss';
+@import './thumbnail.scss';
+@import './recipient.scss';
 
 html, body, #root {
   margin: 0;

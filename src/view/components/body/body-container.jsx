@@ -4,7 +4,11 @@ import MessageList from './message-list.jsx';
 
 class BodyContainer extends Component {
   render() {
-    return <MessageList messages={this.props.messages} />;
+    return (
+      <div className='body-container'>
+        < MessageList messages={this.props.messages} />
+      </div>
+    );
   }
 }
 
