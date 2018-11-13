@@ -11,7 +11,7 @@
     "nodemon": "nodemon --exec npm run babel-node",
     "eslint": "eslint",
     "postinstall": "npm run build-api",
-    "build-view": "rm -Rf dist/view && gulp build-view",
+    "build-view": "rm -Rf build/view && gulp build-view",
     "view-server": "gulp view-server",
     "dev:view": "webpack-dev-server --watch",
     "dev:api": "npm run build-api && nodemon build/api/api-server",
