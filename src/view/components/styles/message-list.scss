@@ -1,7 +1,6 @@
 .message-list{
-  // flex-basis: 100%;
-  // overflow: auto;
   display: flex;
+  overflow: auto;
   flex-direction: column;
   align-items: flex-end;
 }

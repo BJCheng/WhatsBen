@@ -8,8 +8,9 @@
   background-size: 24em;
   background-color: $background-khaki;
   overflow: auto;
-  flex-basis: 100%;
   
+  flex-basis: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
 }
