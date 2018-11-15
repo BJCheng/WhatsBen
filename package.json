@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha ./src/**/__tests__/*.test.js --compilers js:@babel/register",
     "build-api": "rm -Rf build/api && babel src/api -d build/api",
+    "api-server": "npm run build-api && nodemon build/api/api-server",
     "babel": "babel",
     "babel-node": "babel-node",
     "nodemon": "nodemon --exec npm run babel-node",
@@ -14,7 +15,6 @@
     "build-view": "rm -Rf build/view && gulp build-view",
     "view-server": "gulp view-server",
     "dev:view": "webpack-dev-server --watch",
-    "dev:api": "npm run build-api && nodemon build/api/api-server",
     "gulp": "gulp"
   },
   "engines": {
