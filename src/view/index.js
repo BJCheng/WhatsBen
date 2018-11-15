@@ -10,8 +10,10 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faGrin, faUser, faChevronCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { BrowserRouter, Route } from 'react-router-dom';
 import './images/background.png';
+import setupSocket from './utils/setup-socket';
 
 library.add(faGrin, faUser, faChevronCircleRight);
+setupSocket();
 
 const store = createStore(rootReducer, applyMiddleware(stateLogger));
 ReactDOM.render(
