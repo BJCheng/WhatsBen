@@ -1,7 +1,8 @@
 import SocketServer from './socket-server';
 
 export default (httpServer) => {
-  const socketServer = new SocketServer(httpServer);
+  // next想singletone的getInstance怎麼傳參數
+  const socketServer = SocketServer.getSocket(httpServer);
   socketServer.setupUserNamespace('/ben');
 };
 

@@ -1,6 +1,7 @@
 import { redisClient } from './redis-client';
 import { UserValidator } from '../core/user-validator';
 import jwt from 'jsonwebtoken';
+import { sockets } from './class-setup-socket';
 
 const handleSecret = 'random-secret';
 
@@ -63,5 +64,11 @@ export default (app) => {
     const token = bearerToken.substring('Bearer '.length);
     const decoded = jwt.verify(token, handleSecret);
     res.send(decoded.handle);
+  });
+
+  app.post('/send-message', (req, res) => {
+    const { userNamespace, msg } = req.body;
+    sockets.emit('receive-message', '/ben', msg);
+    res.send({ userNamespace, msg });
   });
 };

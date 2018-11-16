@@ -4,7 +4,7 @@ import { setupRedis } from './redis-client';
 import setupRoutes from './routes';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import setupSocketServer from './setup-socket-server';
+import { setupSockets } from './class-setup-socket';
 
 const port = process.env.PORT || 4000;
 const app = express();
@@ -16,5 +16,5 @@ setupRedis();
 const httpServer = app.listen(port, () => {
   console.log(`Express app listening at port ${port}`);
 });
-setupSocketServer(httpServer);
+setupSockets(httpServer);
 setupRoutes(app);
