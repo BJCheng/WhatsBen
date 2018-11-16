@@ -11,11 +11,12 @@ import { faGrin, faUser, faChevronCircleRight } from '@fortawesome/free-solid-sv
 import { BrowserRouter, Route } from 'react-router-dom';
 import './images/background.png';
 import setupSocket from './utils/setup-socket';
+import thunk from 'redux-thunk';
 
 library.add(faGrin, faUser, faChevronCircleRight);
 setupSocket();
 
-const store = createStore(rootReducer, applyMiddleware(stateLogger));
+const store = createStore(rootReducer, applyMiddleware(stateLogger, thunk));
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
