@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Emoji from './emoji.jsx';
 import Input from './input.jsx';
 import SendButton from './send-button.jsx';
-import { changeInput, sendMessage, clearInput } from '../../actions';
+import { changeInput, appendMessageToList, sendMessageAsync, clearInput } from '../../actions';
 
 class InputContainer extends Component {
   constructor(props) {
@@ -49,7 +49,10 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(changeInput(event.target.value));
     },
     sendMessage: (text) => {
-      dispatch(sendMessage(text));
+      dispatch(sendMessageAsync(text)).then((response) => {
+        // dispatch action to render picture of server received
+      });
+      dispatch(appendMessageToList(text));
       dispatch(clearInput());
     }
   };
