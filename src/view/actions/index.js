@@ -7,7 +7,6 @@ export const changeInput = (text) => ({
 });
 
 export const appendMessageToList = (text) => ({
-  // TODO: 改type
   type: APPEND_MESSAGE,
   value: text
 });
