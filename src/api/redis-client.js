@@ -1,4 +1,6 @@
+import bluebird from 'bluebird';
 import redis from 'redis';
+bluebird.promisifyAll(redis);
 
 export let redisClient = null;
 
@@ -19,4 +21,20 @@ export const setupRedis = () => {
   redisClient.on('error', function (err) {
     console.error(err, 'redis error');
   });
+};
+
+export const redisKeys = {
+  users: 'users|1', // users:ben as a key
+  contactsByUser(handle) {
+    return `contacts|${handle}|1`;
+  },
+  getUser(name) {
+    return `users:${name}`;
+  },
+  getMessages(from, to) {
+    if (from.localeCompare(to) < 0)
+      return `messages:${from}|${to}`;
+    else
+      return `messages:${to}|${from}`;
+  }
 };
