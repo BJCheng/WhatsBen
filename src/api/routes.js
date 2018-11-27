@@ -74,7 +74,6 @@ export default (app) => {
     res.send({ userNamespace, msg });
   });
 
-  //TODO: test
   app.get('/messages/:from/:to', async (req, res, next) => {
     const { from, to } = req.params;
     const exists = await redisClient.existsAsync(redisKeys.getMessages(from, to), 0, -1).catch(err => {
@@ -82,7 +81,7 @@ export default (app) => {
     });
     if (exists == 0) {
       res.json(new Response().setError(`No messages between ${from} and ${to}`));
-      next('1234');
+      next();
     }
     const result = await redisClient.lrangeAsync(redisKeys.getMessages(from, to), 0, -1).catch(err => {
       next(err);
