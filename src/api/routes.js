@@ -108,6 +108,18 @@ export default (app) => {
     // sockets.emit('receive-message', '/to', message); // especially test if json string can be emitted or not
   });
 
+  app.get('/user/:name', async (req, res) => {
+    const { name } = req.params;
+    const result = await redisClient.hgetallAsync(redisKeys.getUser(name)).catch(err => {
+      console.error(err);
+    });
+    if(!result){
+      res.json(new Response().setError(`no such user: ${name}`).toJson());
+      return;
+    }
+    res.json(new Response().setData(result).toJson());
+  });
+
   app.post('/user', async (req, res, next) => {
     const { name } = req.body;
     if (!name) {
