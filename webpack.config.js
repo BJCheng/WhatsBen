@@ -53,6 +53,7 @@ module.exports = {
     quiet: false,
     noInfo: false,
     publicPath: '/build/view/',
-    stats: { chunks: false, colors: true }
+    stats: { chunks: false, colors: true },
+    historyApiFallback: true
   }
 };
