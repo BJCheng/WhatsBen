@@ -14,30 +14,29 @@ import setupSocket from './utils/setup-socket';
 import thunk from 'redux-thunk';
 import LocalStorage from './utils/local-storage';
 
-const loadFromLocalStorage = () => {
-  const user = LocalStorage.getObj('from');
-  return { from: user };
-};
-
 library.add(faGrin, faUser, faChevronCircleRight);
 setupSocket(); // TODO: after set from & to
-const initialState = loadFromLocalStorage();
 
 const Login = () => {
   return <div>login page</div>;
 };
 
+const loadFromLocalStorage = () => {
+  const user = LocalStorage.getObj('from');
+  return { from: user };
+};
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(rootReducer, initialState, composeEnhancers(applyMiddleware(thunk)));
+const store = createStore(rootReducer, loadFromLocalStorage(), composeEnhancers(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
-      <div>
+      <div style={{ height: '100%' }}>
         <Route exact path="/" component={Login} />
         <Route exact path="/:toName" component={App} />
       </div>
     </Provider>
-  </BrowserRouter>,
+  </BrowserRouter >,
   document.getElementById('root')
 );
