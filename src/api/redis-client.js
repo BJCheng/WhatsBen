@@ -28,13 +28,13 @@ export const redisKeys = {
   contactsByUser(handle) {
     return `contacts|${handle}|1`;
   },
-  getUser(name) {
-    return `users:${name}`;
+  getUser(id) {
+    return `users:${id}`;
   },
-  getMessages(from, to) {
-    if (from.localeCompare(to) < 0)
-      return `messages:${from}|${to}`;
+  getMessages(fromId, toId) {
+    if (fromId.localeCompare(toId) < 0)
+      return `messages:${fromId}|${toId}`;
     else
-      return `messages:${to}|${from}`;
+      return `messages:${toId}|${fromId}`;
   }
 };
