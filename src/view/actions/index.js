@@ -1,4 +1,4 @@
-import { CHANGE_INPUT, APPEND_MESSAGE, CLEAR_INPUT, REDIRECT_TO_LOGIN } from './types';
+import { CHANGE_INPUT, APPEND_MESSAGE, CLEAR_INPUT, REDIRECT_TO_LOGIN, SET_TO_USER } from './types';
 import axios from 'axios';
 
 const apiUrl = global.__apiUrl__;
@@ -31,4 +31,10 @@ export const getUser = (name) => (dispatch, getState) => {
 
 export const redirectToLogin = () => ({
   type: REDIRECT_TO_LOGIN
+});
+
+export const setToUser = (toUserObj) => ({
+  type: SET_TO_USER,
+  name: toUserObj.name,
+  lastSeen: toUserObj.lastSeen,
 });

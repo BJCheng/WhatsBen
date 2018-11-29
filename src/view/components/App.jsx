@@ -5,7 +5,7 @@ import FooterContainer from './footer/footer-container.jsx';
 import { connect } from 'react-redux';
 import './styles/app.scss';
 import LocalStorage from '../utils/local-storage';
-import { getUser, redirectToLogin } from '../actions';
+import { getUser, redirectToLogin, setToUser } from '../actions';
 
 class App extends React.Component {
   constructor(props) {
@@ -20,7 +20,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    alert(this.props.from);
+    alert(`from user: ${this.props.from}`);
   }
 
   render() {
@@ -55,8 +55,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(getUser(toName)).then((res) => {
       if (res.error && res.error.length > 0) {
         dispatch(redirectToLogin());
-        throw new Error('eeee');
+        throw new Error();
       }
+      dispatch(setToUser(res.data));
     }).then(() => {
       alert('after catch');
     });
