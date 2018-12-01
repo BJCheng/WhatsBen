@@ -1,7 +1,8 @@
 import React from 'react';
 import Message from './Message.jsx';
+import { connect } from 'react-redux';
 
-export default class MessageList extends React.Component {
+class MessageList extends React.Component {
   constructor(props) {
     super(props);
     this.lastMessageRef = React.createRef();
@@ -10,15 +11,12 @@ export default class MessageList extends React.Component {
   }
 
   componentDidMount() {
+    this.loadMessages();
     this.scrollToBottom('instant');
   }
 
   componentDidUpdate() {
     this.scrollToBottom('smooth');
-  }
-
-  scrollToBottom(behavior) {
-    this.lastMessageRef.current.scrollIntoView({ behavior });
   }
 
   renderMessage(messages) {
@@ -37,4 +35,23 @@ export default class MessageList extends React.Component {
       </div>
     );
   }
+
+  loadMessages() {
+    // this.props.
+  }
+
+  scrollToBottom(behavior) {
+    this.lastMessageRef.current.scrollIntoView({ behavior });
+  }
 }
+
+const mapStateToProps = () => ({
+});
+
+const mapDispatchToProps = () => ({
+
+});
+
+export default connect(
+  mapStateToProps, mapDispatchToProps
+)(MessageList);

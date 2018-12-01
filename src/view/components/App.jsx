@@ -58,6 +58,7 @@ const mapDispatchToProps = (dispatch) => ({
         throw new Error();
       }
       dispatch(setToUser(res.data));
+      
     }).then(() => {
       alert('after catch');
     });
