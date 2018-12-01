@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { sockets } from './class-setup-socket';
 import uuidv4 from 'uuid/v4';
 import Response from './response';
+import randomWords from 'random-words';
 
 const handleSecret = 'random-secret';
 
@@ -108,48 +109,45 @@ export default (app) => {
     // sockets.emit('receive-message', '/to', message); // especially test if json string can be emitted or not
   });
 
-  app.get('/user/:name', async (req, res) => {
-    const { name } = req.params;
-    const result = await redisClient.hgetallAsync(redisKeys.getUser(name)).catch(err => {
+  app.get('/user/:id', async (req, res) => {
+    const { id } = req.params;
+    const result = await redisClient.hgetallAsync(redisKeys.getUser(id)).catch(err => {
       console.error(err);
     });
-    if(!result){
-      res.json(new Response().setError(`no such user: ${name}`).toJson());
+    if (!result) {
+      res.json(new Response().setError(`no such user: ${id}`).toJson());
       return;
     }
     res.json(new Response().setData(result).toJson());
   });
 
-  app.post('/user', async (req, res, next) => {
+  app.post('/user', async (req, res) => {
     const { name } = req.body;
     if (!name) {
       res.json(new Response().setError('Missing user name.').toJson());
       return;
     }
 
-    const result = await redisClient.existsAsync(redisKeys.getUser(name)).catch(err => {
-      console.error('redis exists error', err);
+    const id = randomWords({ exactly: 2, join: '-' });
+    const result = await redisClient.existsAsync(redisKeys.getUser(id)).catch(err => {
       res.json(new Response().setError(err));
       return;
     });
     if (result === 1) {
-      const response = new Response().setError(`user ${name} already exist`);
-      console.log(`user ${name} already exist`);
+      const response = new Response().setError(`user id: ${id} already exist`);
       res.json(response.toJson());
       return;
     }
 
-    console.log('after redis exists');
     const user = {
+      id,
       name,
       lastSeen: Date.now()
     };
-    await redisClient.hsetAsync(redisKeys.getUser(name), 'name', user.name, 'lastSeen', user.lastSeen).catch(err => {
+    await redisClient.hsetAsync(redisKeys.getUser(id), 'id', id, 'name', user.name, 'lastSeen', user.lastSeen).catch(err => {
       res.json(new Response().setError(err).toJson());
-      console.log('hsetAsync error');
       return;
     });
-    console.log('after hsetAsync');
     res.json(new Response().setData(user).toJson());
     return;
   });

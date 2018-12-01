@@ -24,12 +24,11 @@ export const setupRedis = () => {
 };
 
 export const redisKeys = {
-  users: 'users|1', // users:ben as a key
   contactsByUser(handle) {
     return `contacts|${handle}|1`;
   },
   getUser(id) {
-    return `users:${id}`;
+    return `user:${id}`;
   },
   getMessages(fromId, toId) {
     if (fromId.localeCompare(toId) < 0)
