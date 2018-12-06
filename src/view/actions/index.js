@@ -35,6 +35,7 @@ export const redirectToLogin = () => ({
 
 export const setToUser = (toUserObj) => ({
   type: SET_TO_USER,
+  id: toUserObj.id,
   name: toUserObj.name,
   lastSeen: toUserObj.lastSeen,
 });

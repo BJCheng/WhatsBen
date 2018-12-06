@@ -47,7 +47,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  from: state.from
+  from: state.from,
+  to: state.to
 });
 
 const mapDispatchToProps = (dispatch) => ({
