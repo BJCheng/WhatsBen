@@ -1,4 +1,8 @@
-import { CHANGE_INPUT, APPEND_MESSAGE, CLEAR_INPUT, REDIRECT_TO_LOGIN, SET_TO_USER } from './types';
+import {
+  CHANGE_INPUT, APPEND_MESSAGE, CLEAR_INPUT, REDIRECT_TO_LOGIN, SET_TO_USER,
+  RECEIVE_TO_USER
+} from './types';
+import { getUserById, getMessgeasBetween } from './apis';
 import axios from 'axios';
 
 const apiUrl = global.__apiUrl__;
@@ -25,15 +29,21 @@ export const loadMessages = (dispatch, getState) => {
   return axios.get(`${apiUrl}`);
 };
 
-export const getUser = (name) => (dispatch, getState) => {
-  return axios.get(`${apiUrl}/user/${name}`).then(({ data }) => data);
+export const fetchToUser = (id) => async dispatch => {
+  const response = await getUserById(id);
+  const data = response.data;
+  if(data.error || data.error.length > 0){
+    // dispatch(userNotExist());
+    return;
+  }
+  dispatch(receiveToUser(data.data));
 };
 
 export const redirectToLogin = () => ({
   type: REDIRECT_TO_LOGIN
 });
 
-export const setToUser = (toUserObj) => ({
+export const receiveToUser = (toUserObj) => ({
   type: SET_TO_USER,
   id: toUserObj.id,
   name: toUserObj.name,

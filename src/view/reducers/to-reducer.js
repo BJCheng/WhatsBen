@@ -5,11 +5,11 @@ const toInitialState = {
   lastSeen: Date.now()
 };
 
-export default (state, action) => {
+export default (state = toInitialState, action) => {
   switch (action.type) {
     case SET_TO_USER:
       return { ...state, id: action.id, name: action.name, lastSeen: action.lastSeen };
     default:
-      return toInitialState;
+      return state;
   }
 };
