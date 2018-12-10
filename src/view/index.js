@@ -21,13 +21,8 @@ const Login = () => {
   return <div>login page</div>;
 };
 
-const loadFromLocalStorage = () => {
-  const user = LocalStorage.getObj('from');
-  return { from: user };
-};
-
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(rootReducer, loadFromLocalStorage(), composeEnhancers(applyMiddleware(thunk)));
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <BrowserRouter>
