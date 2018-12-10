@@ -48,8 +48,7 @@ class MessageList extends React.Component {
 const mapStateToProps = () => ({
 });
 
-const mapDispatchToProps = () => ({
-
+const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(

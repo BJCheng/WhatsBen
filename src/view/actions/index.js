@@ -1,6 +1,6 @@
 import {
   CHANGE_INPUT, APPEND_MESSAGE, CLEAR_INPUT, REDIRECT_TO_LOGIN,
-  RECEIVE_TO_USER, SET_FROM_USER
+  RECEIVE_TO_USER, SET_FROM_USER, RENDER_MODAL, HIDE_MODAL
 } from './types';
 import { getUserById, getMessgeasBetween } from './apis';
 import LocalStorage from '../utils/local-storage';
@@ -34,7 +34,7 @@ export const fetchToUser = (id) => async dispatch => {
   const response = await getUserById(id);
   const data = response.data;
   if (data.error || data.error.length > 0) {
-    // dispatch(userNotExist());
+    dispatch(renderModalWithMsg('The user you are trying to make contact with is not exist.'));
     return;
   }
   dispatch(receiveToUser(data.data));
@@ -56,3 +56,12 @@ export const setFromUser = () => {
     fromUserObj
   };
 };
+
+export const renderModalWithMsg = (message) => ({
+  type: RENDER_MODAL,
+  message
+});
+
+export const hideModal = () => ({
+  type: HIDE_MODAL
+});

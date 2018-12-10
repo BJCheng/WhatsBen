@@ -4,6 +4,7 @@ import Recipient from './recipient.jsx';
 import Thumbnail from './thumbnail.jsx';
 
 class HeaderContainer extends Component {
+
   render() {
     return (
       <div className='header-container'>
@@ -14,10 +15,14 @@ class HeaderContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => {
+  return { to: state.to };
+};
 
+const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(HeaderContainer);

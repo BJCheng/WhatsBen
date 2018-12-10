@@ -25,7 +25,7 @@ class App extends React.Component {
   render() {
     return (
       <div className='app'>
-        <HeaderContainer test2='test2'/>
+        <HeaderContainer />
         <BodyContainer />
         <FooterContainer />
         {this.renderModal()}
@@ -34,17 +34,18 @@ class App extends React.Component {
   }
 
   renderModal() {
-    if (this.props.from)
+    if (!this.props.modal.render)
       return;
     return (
-      <div>modal</div>
+      <div>{this.props.modal.message}</div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
   from: state.from,
-  to: state.to
+  to: state.to, 
+  modal: state.modal
 });
 
 const mapDispatchToProps = (dispatch) => ({
