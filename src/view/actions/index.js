@@ -1,5 +1,5 @@
 import {
-  CHANGE_INPUT, APPEND_MESSAGE, CLEAR_INPUT, REDIRECT_TO_LOGIN, SET_TO_USER,
+  CHANGE_INPUT, APPEND_MESSAGE, CLEAR_INPUT, REDIRECT_TO_LOGIN,
   RECEIVE_TO_USER, SET_FROM_USER
 } from './types';
 import { getUserById, getMessgeasBetween } from './apis';
@@ -41,7 +41,7 @@ export const fetchToUser = (id) => async dispatch => {
 };
 
 const receiveToUser = (toUserObj) => ({
-  type: SET_TO_USER,
+  type: RECEIVE_TO_USER,
   toUserObj
 });
 

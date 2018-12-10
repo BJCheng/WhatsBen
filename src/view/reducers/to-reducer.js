@@ -1,4 +1,4 @@
-import { SET_TO_USER } from '../actions/types';
+import { RECEIVE_TO_USER } from '../actions/types';
 
 const toInitialState = {
   name: '',
@@ -7,7 +7,7 @@ const toInitialState = {
 
 export default (state = toInitialState, action) => {
   switch (action.type) {
-    case SET_TO_USER:
+    case RECEIVE_TO_USER:
       return { ...state, ...action.toUserObj };
     default:
       return state;
