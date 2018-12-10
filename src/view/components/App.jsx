@@ -19,13 +19,13 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    alert(`from user: ${this.props.from}`);
+    
   }
 
   render() {
     return (
       <div className='app'>
-        <HeaderContainer />
+        <HeaderContainer test2='test2'/>
         <BodyContainer />
         <FooterContainer />
         {this.renderModal()}
