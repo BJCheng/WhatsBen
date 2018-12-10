@@ -1,8 +1,9 @@
 import {
   CHANGE_INPUT, APPEND_MESSAGE, CLEAR_INPUT, REDIRECT_TO_LOGIN, SET_TO_USER,
-  RECEIVE_TO_USER
+  RECEIVE_TO_USER, SET_FROM_USER
 } from './types';
 import { getUserById, getMessgeasBetween } from './apis';
+import LocalStorage from '../utils/local-storage';
 import axios from 'axios';
 
 const apiUrl = global.__apiUrl__;
@@ -32,20 +33,26 @@ export const loadMessages = (dispatch, getState) => {
 export const fetchToUser = (id) => async dispatch => {
   const response = await getUserById(id);
   const data = response.data;
-  if(data.error || data.error.length > 0){
+  if (data.error || data.error.length > 0) {
     // dispatch(userNotExist());
     return;
   }
   dispatch(receiveToUser(data.data));
 };
 
+const receiveToUser = (toUserObj) => ({
+  type: SET_TO_USER,
+  toUserObj
+});
+
 export const redirectToLogin = () => ({
   type: REDIRECT_TO_LOGIN
 });
 
-export const receiveToUser = (toUserObj) => ({
-  type: SET_TO_USER,
-  id: toUserObj.id,
-  name: toUserObj.name,
-  lastSeen: toUserObj.lastSeen,
-});
+export const setFromUser = () => {
+  const fromUserObj = LocalStorage.getObj('from');
+  return {
+    type: SET_FROM_USER,
+    fromUserObj
+  };
+};

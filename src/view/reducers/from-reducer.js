@@ -8,8 +8,8 @@ const fromInitialState = {
 export default (state = fromInitialState, action) => {
   switch (action.type) {
     case SET_FROM_USER:
-      return { ...state, name: action.name, lastSeen: action.lastSeen };
+      return { ...state, ...action.fromUserObj };
     default:
       return state;
   }
-}
+};

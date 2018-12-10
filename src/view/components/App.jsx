@@ -4,13 +4,12 @@ import BodyContainer from './body/body-container.jsx';
 import FooterContainer from './footer/footer-container.jsx';
 import { connect } from 'react-redux';
 import './styles/app.scss';
-import LocalStorage from '../utils/local-storage';
-import { fetchToUser, redirectToLogin } from '../actions';
+import { fetchToUser, setFromUser, redirectToLogin } from '../actions';
+import localStorage from '../utils/local-storage';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.setFromUser = this.setFromUser.bind(this);
     this.renderModal = this.renderModal.bind(this);
   }
 
@@ -34,9 +33,6 @@ class App extends React.Component {
     );
   }
 
-  setFromUser() {
-  }
-
   renderModal() {
     if (this.props.from)
       return;
@@ -54,6 +50,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   fetchUsers: (id) => {
     dispatch(fetchToUser(id));
+    dispatch(setFromUser());
   }
 });
 
