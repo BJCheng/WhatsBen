@@ -51,6 +51,9 @@ export const redirectToLogin = () => ({
 
 export const setFromUser = () => {
   const fromUserObj = LocalStorage.getObj('from');
+  if (!fromUserObj) {
+    return (renderModalWithMsg('It is your first time login, please tell us your preferrable way to be called.'));
+  }
   return {
     type: SET_FROM_USER,
     fromUserObj
