@@ -15,7 +15,7 @@ class App extends React.Component {
 
   componentWillMount() {
     const { toName } = this.props.match.params;
-    this.props.fetchUsers(toName);
+    this.props.initiateApp(toName);
   }
 
   componentDidMount() {
@@ -49,8 +49,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchUsers: (id) => {
-    dispatch(fetchToUser(id));
+  initiateApp: (toId) => {
+    dispatch(fetchToUser(toId));
     dispatch(setFromUser());
   }
 });
