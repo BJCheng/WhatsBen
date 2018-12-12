@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import rootReducer from './reducers';
 import App from './components/App.jsx';
+import Login from './components/Login.jsx';
 import './normalize.scss';
 import stateLogger from './reducers/middlewares/state-logger';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -16,10 +17,6 @@ import LocalStorage from './utils/local-storage';
 
 library.add(faGrin, faUser, faChevronCircleRight);
 setupSocket(); // TODO: after set from & to
-
-const Login = () => {
-  return <div>login page</div>;
-};
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
