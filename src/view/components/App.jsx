@@ -1,11 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import HeaderContainer from './header/header-container.jsx';
 import BodyContainer from './body/body-container.jsx';
 import FooterContainer from './footer/footer-container.jsx';
-import { connect } from 'react-redux';
 import './styles/app.scss';
-import { fetchToUser, setFromUser, redirectToLogin } from '../actions';
-import localStorage from '../utils/local-storage';
+import { fetchToUser, setFromUser } from '../actions';
 
 class App extends React.Component {
   constructor(props) {
@@ -19,16 +18,15 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    
+
   }
 
   render() {
     return (
-      <div className='app'>
-        <HeaderContainer />
-        <BodyContainer />
-        <FooterContainer />
+      <div style={{ height: '100%', backgroundColor: '#F2F2F2' }}>
+        {this.renderChat()}
         {this.renderModal()}
+        {this.renderLoading()}
       </div>
     );
   }
@@ -40,12 +38,33 @@ class App extends React.Component {
       <div>{this.props.modal.message}</div>
     );
   }
+
+  renderChat = () => {
+    if (!this.props.chatReady || !this.props.to.id)
+      return;
+    return (
+      <div className='chat'>
+        <HeaderContainer />
+        <BodyContainer />
+        <FooterContainer />
+      </div>
+    );
+  }
+
+  renderLoading = () => {
+    if (this.props.chatReady)
+      return;
+    return (
+      <div className="lds-heart"><div></div></div>
+    );
+  }
 }
 
 const mapStateToProps = (state) => ({
   from: state.from,
-  to: state.to, 
-  modal: state.modal
+  to: state.to,
+  modal: state.modal,
+  chatReady: state.chatReady
 });
 
 const mapDispatchToProps = (dispatch) => ({
