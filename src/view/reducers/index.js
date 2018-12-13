@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import headerReducer from './header-reducer';
-import bodyReducer from './body-reducer';
+import messagesReducer from './messages-reducer';
 import footerReducer from './footer-reducer';
 import fromReducer from './from-reducer';
 import toReducer from './to-reducer';
@@ -9,7 +9,7 @@ import chatReadyReducer from './chat-ready-reducer';
 
 export default combineReducers({
   header: headerReducer,
-  body: bodyReducer,
+  messages: messagesReducer,
   footer: footerReducer,
   from: fromReducer,
   to: toReducer,
