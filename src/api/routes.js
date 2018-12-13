@@ -93,19 +93,19 @@ export default (app) => {
   //TODO: test
   app.put('/messages', async (req, res, next) => {
     const { from, to, text, sendTime } = req.body;
-    const message = JSON.stringify({
+    if (!from || !to || !text || !sendTime)
+      return res.json(new Response().setError('Missing required fields'));
+    const messageJson = JSON.stringify({
       from,
       to,
       text,
       sendTime,
       serverReceiveTime: Date.now()
     });
-    if (!from || !to || !text || !sendTime)
-      res.json(new Response().setError('Missing required fields'));
-    const result = await redisClient.rpushAsync(redisKeys.getMessages(from, to), message).catch(err => {
+    const newLength = await redisClient.rpushAsync(redisKeys.getMessages(from, to), messageJson).catch(err => {
       next(err);
     });
-    res.json(new Response().setData(message).toJson());
+    res.json(new Response().setData(newLength).toJson());
     // sockets.emit('receive-message', '/to', message); // especially test if json string can be emitted or not
   });
 
