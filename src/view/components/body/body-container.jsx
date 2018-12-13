@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import MessageList from './message-list.jsx';
 import { } from '../../actions';
 
-class BodyContainer extends Component {
+class BodyContainer extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -15,14 +15,13 @@ class BodyContainer extends Component {
   render() {
     return (
       <div className='body-container'>
-        <MessageList messages={this.props.messages} />
+        <MessageList />
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  messages: state.body.messages
 });
 
 export default connect(

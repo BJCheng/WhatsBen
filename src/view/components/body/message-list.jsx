@@ -44,7 +44,8 @@ class MessageList extends React.Component {
 
 const mapStateToProps = (state) => ({
   from: state.from,
-  to: state.to
+  to: state.to,
+  messages: state.messages
 });
 
 const mapDispatchToProps = (dispatch) => ({
