@@ -6,10 +6,10 @@ class Recipient extends React.Component {
     return (
       <div className='recipient'>
         <div>
-          <span>First Name Last Name</span>
+          <span>{this.props.capitalizedName}</span>
         </div>
         <div className='timestamp'>
-          <span>timestamp</span>
+          <span>{this.props.dateFormatString}</span>
         </div>
       </div>
 
@@ -18,13 +18,11 @@ class Recipient extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { userId, firstName, lastName, timestamp } = state.header;
-  return {
-    userId,
-    firstName,
-    lastName,
-    timestamp
-  };
+  const { name, lastSeen } = state.header;
+  const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
+  const date = new Date(parseInt(lastSeen));
+  const dateFormatString = `last seen ${date.toLocaleDateString()} at ${date.toLocaleTimeString()}`;
+  return { ...state.header, capitalizedName, dateFormatString };
 };
 
 export default connect(

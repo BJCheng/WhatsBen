@@ -16,7 +16,7 @@ class HeaderContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { to: state.to };
+  return { ...state.to };
 };
 
 const mapDispatchToProps = (dispatch) => ({
