@@ -22,8 +22,9 @@ class MessageList extends React.Component {
 
   renderMessage = (messages) => {
     return messages.map((message) => {
+      message = JSON.parse(message);
       return (
-        <Message text={message} />
+        <Message {...message} />
       );
     });
   }
