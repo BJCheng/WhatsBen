@@ -1,12 +1,15 @@
+import { RECEIVE_TO_USER } from '../actions/types';
+
 const headerInitialState = {
-  userId: '',
-  firstName: '',
-  lastName: '',
+  id: '',
+  name: '',
   thumbnailUrl: '',
-  timestamp: ''
+  lastSeen: ''
 };
 export default (state = headerInitialState, action) => {
   switch (action.type) {
+    case RECEIVE_TO_USER:
+      return { ...state, ...action.toUserObj };
     default:
       return state;
   }

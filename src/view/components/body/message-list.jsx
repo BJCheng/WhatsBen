@@ -1,17 +1,18 @@
 import React from 'react';
 import Message from './Message.jsx';
 import { connect } from 'react-redux';
+import { fetchMessagesBetween } from '../../actions';
 
 class MessageList extends React.Component {
   constructor(props) {
     super(props);
     this.lastMessageRef = React.createRef();
-    this.renderMessage = this.renderMessage.bind(this);
     this.scrollToBottom = this.scrollToBottom.bind(this);
   }
 
   componentDidMount() {
-    this.loadMessages();
+    const { from, to } = this.props;
+    this.props.fetchMessages(from.id, to.id);
     this.scrollToBottom('instant');
   }
 
@@ -19,7 +20,7 @@ class MessageList extends React.Component {
     this.scrollToBottom('smooth');
   }
 
-  renderMessage(messages) {
+  renderMessage = (messages) => {
     return messages.map((message) => {
       return (
         <Message text={message} />
@@ -36,19 +37,20 @@ class MessageList extends React.Component {
     );
   }
 
-  loadMessages() {
-    // this.props.
-  }
-
   scrollToBottom(behavior) {
     this.lastMessageRef.current.scrollIntoView({ behavior });
   }
 }
 
-const mapStateToProps = () => ({
+const mapStateToProps = (state) => ({
+  from: state.from,
+  to: state.to
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  fetchMessages: (from, to) => {
+    dispatch(fetchMessagesBetween(from, to));
+  }
 });
 
 export default connect(

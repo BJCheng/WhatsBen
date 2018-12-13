@@ -12,13 +12,9 @@ class App extends React.Component {
     this.renderModal = this.renderModal.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { toName } = this.props.match.params;
     this.props.initiateApp(toName);
-  }
-
-  componentDidMount() {
-
   }
 
   render() {
@@ -40,7 +36,7 @@ class App extends React.Component {
   }
 
   renderChat = () => {
-    if (!this.props.chatReady || !this.props.to.id)
+    if (!this.props.chatReady)
       return;
     return (
       <div className='chat'>
@@ -69,8 +65,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   initiateApp: (toId) => {
-    dispatch(fetchToUser(toId));
     dispatch(setFromUser());
+    dispatch(fetchToUser(toId));
   }
 });
 
