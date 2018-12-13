@@ -1,6 +1,7 @@
 import {
   CHANGE_INPUT, APPEND_MESSAGE, CLEAR_INPUT, REDIRECT_TO_LOGIN,
-  RECEIVE_TO_USER, SET_FROM_USER, RENDER_MODAL, HIDE_MODAL, CHAT_READY
+  RECEIVE_TO_USER, SET_FROM_USER, RENDER_MODAL, HIDE_MODAL,
+  CHAT_READY, RECEIVE_MESSAGES
 } from './types';
 import { getUserById, fetchMessgeasBetween } from './apis';
 import LocalStorage from '../utils/local-storage';
@@ -73,8 +74,16 @@ export const hideModal = () => ({
 
 export const fetchMessagesBetween = (from, to) => async (dispatch, getState) => {
   const messages = await fetchMessgeasBetween(from, to);
+  if (!messages.data || messages.data.error)
+    return;
+  dispatch(receiveMessages(messages.data.data));
 };
 
 export const chatReady = () => ({
   type: CHAT_READY
+});
+
+export const receiveMessages = (messages) => ({
+  type: RECEIVE_MESSAGES,
+  messages
 });

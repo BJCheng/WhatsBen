@@ -8,3 +8,4 @@ export const RECEIVE_TO_USER = 'RECEIVE_TO_USER';
 export const RENDER_MODAL = 'RENDER_MODAL';
 export const HIDE_MODAL = 'HIDE_MODAL';
 export const CHAT_READY = 'CHAT_READY';
+export const RECEIVE_MESSAGES = 'RECEIVE_MESSAGES';
