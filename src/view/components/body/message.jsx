@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
-export default class Message extends Component{
-  render(){
+export default class Message extends Component {
+  render() {
     return (
-      <div className='message'>{this.props.text}</div>
+      <div className='message'>{this.props.text}, {this.props.timeString}</div>
     );
   }
 }
