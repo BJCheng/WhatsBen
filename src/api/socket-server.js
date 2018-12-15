@@ -19,23 +19,8 @@ class SocketServer {
   }
 
   emitEventTo(namespace, event, data) {
-    let socket;
-    return () => {
-      if (!socket) {
-        socket = mongoConnection().then((db) => {
-          return db.collection(collectionName);
-        });
-      }
-
-      return socket;
-    }
-    if (!this._io) {
-      throw new Error('not able to emit event, io not setup yet');
-    }
-    console.log(`emitting ${event} event to ${namespace}...`);
-    this._io.of(namespace).emit(event, data);
   }
 }
 
-const socket;
-export default get
+// const socket;
+// export default get

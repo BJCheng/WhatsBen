@@ -93,8 +93,10 @@ export default (app) => {
   //TODO: test
   app.put('/messages', async (req, res, next) => {
     const { from, to, text, sendTime } = req.body;
-    if (!from || !to || !text || !sendTime)
-      return res.json(new Response().setError('Missing required fields'));
+    if (!from || !to || !text || !sendTime){
+      res.json(new Response().setError('Missing required fields'));
+      return;
+    }
     const messageJson = JSON.stringify({
       from,
       to,
@@ -105,8 +107,8 @@ export default (app) => {
     const newLength = await redisClient.rpushAsync(redisKeys.getMessages(from, to), messageJson).catch(err => {
       next(err);
     });
-    res.json(new Response().setData(newLength).toJson());
-    // sockets.emit('receive-message', '/to', message); // especially test if json string can be emitted or not
+    res.json(new Response().setData(messageJson).toJson());
+    sockets.emit('receive-message', '/to', messageJson); // especially test if json string can be emitted or not
   });
 
   app.get('/user/:id', async (req, res) => {
@@ -128,7 +130,7 @@ export default (app) => {
       return;
     }
 
-    const id = randomWords({ exactly: 2, join: '-' });
+    const id = name === 'ben' ? 'ben' : randomWords({ exactly: 2, join: '-' });
     const result = await redisClient.existsAsync(redisKeys.getUser(id)).catch(err => {
       res.json(new Response().setError(err));
       return;
