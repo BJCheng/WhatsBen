@@ -21,7 +21,7 @@ export default class MessageList extends React.Component {
   renderMessage = messages => {
     return messages.map(message => {
       const timeString = message.serverReceiveTime ? new Date(message.serverReceiveTime).toLocaleTimeString() : '';
-      return <Message {...message} timeString={timeString} />;
+      return <Message key={message.sendTime} {...message} timeString={timeString} />;
     });
   }
 
