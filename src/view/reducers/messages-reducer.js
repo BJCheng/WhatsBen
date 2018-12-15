@@ -7,7 +7,8 @@ export default (messages = initialMessages, action) => {
       return [...messages.concat(action.value)];
     }
     case RECEIVE_MESSAGES: {
-      return [...action.messages];
+      // parse json string to objects
+      return [...action.messages.map(msg => JSON.parse(msg))];
     }
     default: {
       return messages;
