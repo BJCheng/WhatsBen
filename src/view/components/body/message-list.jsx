@@ -1,9 +1,7 @@
 import React from 'react';
 import Message from './Message.jsx';
-import { connect } from 'react-redux';
-import { fetchMessagesBetween } from '../../actions';
 
-class MessageList extends React.Component {
+export default class MessageList extends React.Component {
   constructor(props) {
     super(props);
     this.lastMessageRef = React.createRef();
@@ -42,19 +40,3 @@ class MessageList extends React.Component {
     this.lastMessageRef.current.scrollIntoView({ behavior });
   }
 }
-
-const mapStateToProps = (state) => ({
-  from: state.from,
-  to: state.to,
-  messages: state.messages
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  fetchMessages: (from, to) => {
-    dispatch(fetchMessagesBetween(from, to));
-  }
-});
-
-export default connect(
-  mapStateToProps, mapDispatchToProps
-)(MessageList);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import MessageList from './message-list.jsx';
-import { } from '../../actions';
+import { fetchMessagesBetween } from '../../actions';
 
 class BodyContainer extends React.Component {
   constructor(props) {
@@ -15,15 +15,24 @@ class BodyContainer extends React.Component {
   render() {
     return (
       <div className='body-container'>
-        <MessageList />
+        <MessageList {...this.props} />
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
+  from: state.from,
+  to: state.to,
+  messages: state.messages
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchMessages: (from, to) => {
+    dispatch(fetchMessagesBetween(from, to));
+  }
 });
 
 export default connect(
-  mapStateToProps
+  mapStateToProps, mapDispatchToProps
 )(BodyContainer);
