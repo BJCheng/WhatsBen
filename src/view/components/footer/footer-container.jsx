@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import Emoji from './emoji.jsx';
 import Input from './input.jsx';
 import SendButton from './send-button.jsx';
-import { changeInput, appendMessageToList, sendMessageAsync, clearInput } from '../../actions';
+import { changeInput, appendMessage, sendMessage, clearInput } from '../../actions';
 
-class InputContainer extends Component {
+class InputContainer extends React.Component {
   constructor(props) {
     super(props);
     this.onEnterPress = this.onEnterPress.bind(this);
@@ -25,7 +25,7 @@ class InputContainer extends Component {
   onEnterPress(e) {
     if (e.key !== 'Enter') return;
     if (this.props.text.length == 0) return;
-    this.props.sendMessage(this.props.text);
+    this.props.sendMessage(this.props.from.id, this.props.to.id, this.props.text);
   }
 
   onClick() {
@@ -35,6 +35,8 @@ class InputContainer extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  from: state.from,
+  to: state.to,
   text: state.footer.text
 });
 
@@ -48,11 +50,10 @@ const mapDispatchToProps = (dispatch) => {
     onChange: (event) => {
       dispatch(changeInput(event.target.value));
     },
-    sendMessage: (text) => {
-      dispatch(sendMessageAsync(text)).then((response) => {
-        // dispatch action to render picture of server received
-      });
-      dispatch(appendMessageToList(text));
+    sendMessage: (from, to, text) => {
+      const messageObj = { from, to, text, sendTime: Date.now() };
+      dispatch(sendMessage(messageObj));
+      dispatch(appendMessage(messageObj));
       dispatch(clearInput());
     }
   };
