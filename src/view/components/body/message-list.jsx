@@ -18,13 +18,8 @@ export default class MessageList extends React.Component {
     this.scrollToBottom('smooth');
   }
 
-  renderMessage = (messages) => {
-    return messages.map((message) => {
-      message = JSON.parse(message);
-      return (
-        <Message {...message} />
-      );
-    });
+  renderMessage = messages => {
+    return messages.map(message => <Message {...message} />);
   }
 
   render() {
