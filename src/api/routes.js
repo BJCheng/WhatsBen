@@ -90,7 +90,6 @@ export default (app) => {
     res.json(new Response().setData(result).toJson());
   });
 
-  //TODO: test
   app.put('/messages', async (req, res, next) => {
     const { from, to, text, sendTime } = req.body;
     if (!from || !to || !text || !sendTime){
