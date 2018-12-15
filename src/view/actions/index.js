@@ -1,35 +1,36 @@
 import {
   CHANGE_INPUT, APPEND_MESSAGE, CLEAR_INPUT, REDIRECT_TO_LOGIN,
   RECEIVE_TO_USER, SET_FROM_USER, RENDER_MODAL, HIDE_MODAL,
-  CHAT_READY, RECEIVE_MESSAGES
+  CHAT_READY, RECEIVE_MESSAGES, UPDATE_MESSAGE
 } from './types';
-import { getUserById, fetchMessgeasBetween } from './apis';
+import { getUserById, fetchMessgeasBetween, sendMessages } from './apis';
 import LocalStorage from '../utils/local-storage';
-import axios from 'axios';
-
-const apiUrl = global.__apiUrl__;
 
 export const changeInput = (text) => ({
   type: CHANGE_INPUT,
   value: text
 });
 
-export const appendMessageToList = (text) => ({
+export const appendMessage = (messageObj) => ({
   type: APPEND_MESSAGE,
-  value: text
+  messageObj
 });
 
-export const sendMessageAsync = (text) => () => {
-  return axios.post(`${apiUrl}/send-message`, { msg: text });
+export const sendMessage = ({ from, to, text, sendTime }) => async (dispatch) => {
+  const returnedMessage = await sendMessages(from, to, text, sendTime);
+  // dispatch action to render picture of server received
+  const data = JSON.parse(returnedMessage.data.data);
+  dispatch(updateMessage(data));
 };
+
+const updateMessage = (messageObj) => ({
+  type: UPDATE_MESSAGE,
+  messageObj
+});
 
 export const clearInput = () => ({
   type: CLEAR_INPUT
 });
-
-export const loadMessages = (dispatch, getState) => {
-  return axios.get(`${apiUrl}`);
-};
 
 export const fetchToUser = (id) => async dispatch => {
   const response = await getUserById(id);

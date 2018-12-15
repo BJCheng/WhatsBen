@@ -9,3 +9,4 @@ export const RENDER_MODAL = 'RENDER_MODAL';
 export const HIDE_MODAL = 'HIDE_MODAL';
 export const CHAT_READY = 'CHAT_READY';
 export const RECEIVE_MESSAGES = 'RECEIVE_MESSAGES';
+export const UPDATE_MESSAGE = 'UPDATE_MESSAGE';

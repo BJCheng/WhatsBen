@@ -1,17 +1,28 @@
-import { APPEND_MESSAGE, RECEIVE_MESSAGES } from '../actions/types';
+import { APPEND_MESSAGE, RECEIVE_MESSAGES, UPDATE_MESSAGE } from '../actions/types';
 
-const initialMessages = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '1', '2', '3', '4'];
-export default (messages = initialMessages, action) => {
+export default (state = [], action) => {
   switch (action.type) {
     case APPEND_MESSAGE: {
-      return [...messages.concat(action.value)];
+      return state.concat(action.messageObj);
     }
     case RECEIVE_MESSAGES: {
       // parse json string to objects
       return [...action.messages.map(msg => JSON.parse(msg))];
     }
+    case UPDATE_MESSAGE: {
+      // TODO: refacto, 太醜了
+      const newMessageObj = action.messageObj;
+      const newState = [...state];
+      newState.forEach(msg => {
+        if (msg.sendTime === newMessageObj.sendTime) {
+          msg.serverReceiveTime = newMessageObj.serverReceiveTime;
+          return;
+        }
+      });
+      return newState;
+    }
     default: {
-      return messages;
+      return state;
     }
   }
 };
