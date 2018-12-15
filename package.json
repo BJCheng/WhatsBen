@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha ./src/**/__tests__/*.test.js --compilers js:@babel/register",
     "build-api": "rm -Rf build/api && babel src/api -d build/api",
-    "api-server": "npm run build-api && nodemon build/api/api-server",
+    "api-server": "nodemon --exec npm run babel-node src/api/api-server",
     "babel": "babel",
     "babel-node": "babel-node",
     "nodemon": "nodemon --exec npm run babel-node",
