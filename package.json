@@ -15,7 +15,8 @@
     "build-view": "rm -Rf build/view && gulp build-view",
     "view-server": "gulp view-server",
     "dev:view": "webpack-dev-server --watch",
-    "gulp": "gulp"
+    "gulp": "gulp",
+    "webpack-dev-server": "webpack-dev-server --port 5000"
   },
   "engines": {
     "node": "8.6.0",

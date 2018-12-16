@@ -55,6 +55,7 @@ module.exports = {
     noInfo: false,
     publicPath: '/build/view/',
     stats: { chunks: false, colors: true },
-    historyApiFallback: true
+    historyApiFallback: true, // crusial to React Router,
+    inline: true
   }
 };
