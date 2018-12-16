@@ -1,4 +1,7 @@
-import { APPEND_MESSAGE, RECEIVE_MESSAGES, UPDATE_MESSAGE } from '../actions/types';
+import {
+  APPEND_MESSAGE, RECEIVE_MESSAGES, UPDATE_MESSAGE,
+  RECEIVE_MESSAGE
+} from '../actions/types';
 
 export default (state = [], action) => {
   switch (action.type) {
@@ -20,6 +23,9 @@ export default (state = [], action) => {
         }
       });
       return newState;
+    }
+    case RECEIVE_MESSAGE: {
+      return state.concat(action.messageObj);
     }
     default: {
       return state;

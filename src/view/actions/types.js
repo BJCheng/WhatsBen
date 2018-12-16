@@ -10,3 +10,4 @@ export const HIDE_MODAL = 'HIDE_MODAL';
 export const CHAT_READY = 'CHAT_READY';
 export const RECEIVE_MESSAGES = 'RECEIVE_MESSAGES';
 export const UPDATE_MESSAGE = 'UPDATE_MESSAGE';
+export const RECEIVE_MESSAGE = 'RECEIVE_MESSAGE';

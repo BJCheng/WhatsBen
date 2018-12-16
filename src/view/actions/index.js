@@ -1,10 +1,11 @@
 import {
   CHANGE_INPUT, APPEND_MESSAGE, CLEAR_INPUT, REDIRECT_TO_LOGIN,
   RECEIVE_TO_USER, SET_FROM_USER, RENDER_MODAL, HIDE_MODAL,
-  CHAT_READY, RECEIVE_MESSAGES, UPDATE_MESSAGE
+  CHAT_READY, RECEIVE_MESSAGES, UPDATE_MESSAGE, RECEIVE_MESSAGE
 } from './types';
 import { getUserById, fetchMessgeasBetween, sendMessages } from './apis';
 import LocalStorage from '../utils/local-storage';
+import setupSocket from '../utils/setup-socket';
 
 export const changeInput = (text) => ({
   type: CHANGE_INPUT,
@@ -18,7 +19,8 @@ export const appendMessage = (messageObj) => ({
 
 export const sendMessage = ({ from, to, text, sendTime }) => async (dispatch) => {
   const returnedMessage = await sendMessages(from, to, text, sendTime);
-  // dispatch action to render picture of server received
+  // TODO: dispatch action to render picture of server received
+  // TODO: handle if returnedMessage contains errors
   const data = JSON.parse(returnedMessage.data.data);
   dispatch(updateMessage(data));
 };
@@ -53,15 +55,13 @@ export const redirectToLogin = () => ({
   type: REDIRECT_TO_LOGIN
 });
 
-export const setFromUser = () => {
-  const fromUserObj = LocalStorage.getObj('from');
-  if (!fromUserObj) {
-    return (renderModalWithMsg('It is your first time login, please tell us your preferrable way to be called.'));
-  }
-  return {
+export const setFromUser = (fromUserObj) => (dispatch, getState) => {
+  const { id } = fromUserObj;
+  setupSocket(id, dispatch);
+  dispatch({
     type: SET_FROM_USER,
     fromUserObj
-  };
+  });
 };
 
 export const renderModalWithMsg = (message) => ({
@@ -87,4 +87,9 @@ export const chatReady = () => ({
 export const receiveMessages = (messages) => ({
   type: RECEIVE_MESSAGES,
   messages
+});
+
+export const receiveMessage = (messageObj) => ({
+  type: RECEIVE_MESSAGE,
+  messageObj
 });
