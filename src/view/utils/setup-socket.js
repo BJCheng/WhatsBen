@@ -1,10 +1,11 @@
 import io from 'socket.io-client';
+import { receiveMessage } from '../actions';
 
-export default () => {
-  const userSocket = io(`${global.__apiUrl__}/ben`);
+export default (namespace, dispatch) => {
+  const userSocket = io(`${global.__apiUrl__}/${namespace}`);
   userSocket.emit('send-message', 'hi');
   userSocket.on('receive-message', (msg) => {
-    // TODO: dispatch actions
     console.log(`client receive message from server: ${msg}`);
+    dispatch(receiveMessage(msg));
   });
 };
