@@ -1,4 +1,5 @@
 import createSocketIoServer from 'socket.io';
+import util from 'util';
 
 class Sockets {
   constructor(httpServer) {
@@ -10,6 +11,7 @@ class Sockets {
     console.log(`server connected on ${namespace}`);
     userSocket.on('connection', function (socket) {
       console.log(`client connected on ${socket.nsp.name}`);
+      // server socket can also be listening events here
     });
   }
 
@@ -24,5 +26,6 @@ let sockets;
 function setupSockets(httpServer) {
   sockets = new Sockets(httpServer);
   sockets.setupUserNamespace('/ben');
+  sockets.setupUserNamespace('/niu');
 }
 export { setupSockets, sockets };
