@@ -1,13 +1,26 @@
-.message{
+@import './colors.scss';
+
+%message{
   border-radius: 12px;
-  background-color: #DBF9C4;
+  background-color: $message-green;
   line-height: 2em;
   // flex: 1 1 auto;
   padding: 0em 1em;
   margin: 5px 0px;
   box-shadow: 0px 1px 0px 0px #c3c3c3;
+
   .other{
     align-self: flex-start;
     background-color: white;
   }
+}
+  
+.from{
+  @extend %message;
+}
+
+.to{
+  @extend %message;
+  background-color: white;
+  align-self: flex-start;
 }
