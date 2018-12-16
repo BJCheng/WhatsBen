@@ -11,12 +11,9 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faGrin, faUser, faChevronCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { BrowserRouter, Route } from 'react-router-dom';
 import './images/background.png';
-import setupSocket from './utils/setup-socket';
 import thunk from 'redux-thunk';
-import LocalStorage from './utils/local-storage';
 
 library.add(faGrin, faUser, faChevronCircleRight);
-setupSocket(); // TODO: after set from & to
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
