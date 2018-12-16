@@ -35,6 +35,12 @@ export default (app) => {
     });
   });
 
+  app.get('/setup-server-socket/:namespace/', (req, res) => {
+    const { namespace } = req.params;
+    sockets.setupUserNamespace('/' + namespace);
+    res.json(new Response().setData('success').toJson());
+  });
+
   // app.post('/user', (req, res, next) => {
   //   const { handle, name } = req.body;
   //   const user = {
@@ -71,7 +77,7 @@ export default (app) => {
 
   app.post('/send-message', (req, res) => {
     const { userNamespace, msg } = req.body;
-    sockets.emit('receive-message', '/ben', msg);
+    sockets.emit('receive-message', `/${userNamespace}`, msg);
     res.send({ userNamespace, msg });
   });
 
@@ -90,24 +96,25 @@ export default (app) => {
     res.json(new Response().setData(result).toJson());
   });
 
-  app.put('/messages', async (req, res, next) => {
+  app.post('/messages', async (req, res, next) => {
     const { from, to, text, sendTime } = req.body;
-    if (!from || !to || !text || !sendTime){
+    if (!from || !to || !text || !sendTime) {
       res.json(new Response().setError('Missing required fields'));
       return;
     }
-    const messageJson = JSON.stringify({
+    const messageObj = {
       from,
       to,
       text,
       sendTime,
       serverReceiveTime: Date.now()
-    });
-    const newLength = await redisClient.rpushAsync(redisKeys.getMessages(from, to), messageJson).catch(err => {
+    };
+    const messageJson = JSON.stringify(messageObj);
+    await redisClient.rpushAsync(redisKeys.getMessages(from, to), messageJson).catch(err => {
       next(err);
     });
     res.json(new Response().setData(messageJson).toJson());
-    sockets.emit('receive-message', '/to', messageJson); // especially test if json string can be emitted or not
+    sockets.emit('receive-message', `/${to}`, messageObj); // especially test if json string can be emitted or not
   });
 
   app.get('/user/:id', async (req, res) => {
@@ -129,7 +136,7 @@ export default (app) => {
       return;
     }
 
-    const id = name === 'ben' ? 'ben' : randomWords({ exactly: 2, join: '-' });
+    const id = name === 'ben' ? 'ben' : name === 'niu' ? 'niu' : randomWords({ exactly: 2, join: '-' });
     const result = await redisClient.existsAsync(redisKeys.getUser(id)).catch(err => {
       res.json(new Response().setError(err));
       return;
