@@ -4,7 +4,8 @@ import HeaderContainer from './header/header-container.jsx';
 import BodyContainer from './body/body-container.jsx';
 import FooterContainer from './footer/footer-container.jsx';
 import './styles/app.scss';
-import { fetchToUser, setFromUser } from '../actions';
+import { fetchToUser, setFromUser, renderModalWithMsg } from '../actions';
+import LocalStorage from '../utils/local-storage';
 
 class App extends React.Component {
   constructor(props) {
@@ -65,7 +66,12 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   initiateApp: (toId) => {
-    dispatch(setFromUser());
+    const fromUserObj = LocalStorage.getObj('from');
+    if (!fromUserObj) {
+      dispatch(renderModalWithMsg('It is your first time login, please tell us your preferrable way to be called.'));
+      return;
+    }
+    dispatch(setFromUser(fromUserObj));
     dispatch(fetchToUser(toId));
   }
 });
