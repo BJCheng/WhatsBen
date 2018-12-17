@@ -4,7 +4,8 @@ const baseUrl = axios.create({
   baseURL: global.__apiUrl__
 });
 
-export const getUserById = (id) => (baseUrl.get(`/user/${id}`));
-
-export const fetchMessgeasBetween = (from, to) => baseUrl.get(`/messages/${from}/${to}`);
-export const sendMessages = (from, to, text, sendTime) => baseUrl.post('/messages', {from, to, text, sendTime});
+export default {
+  getUserById: (id) => (baseUrl.get(`/user/${id}`)),
+  fetchMessgeasBetween: (from, to) => baseUrl.get(`/messages/${from}/${to}`),
+  sendMessages : (from, to, text, sendTime) => baseUrl.post('/messages', {from, to, text, sendTime})
+};
