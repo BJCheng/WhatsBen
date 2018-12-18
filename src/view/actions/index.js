@@ -6,6 +6,7 @@ import {
 } from './types';
 import api from './api';
 import setupSocket from '../utils/setup-socket';
+import LocalStorage from '../utils/local-storage';
 
 export const changeInput = (text) => ({
   type: CHANGE_INPUT,
@@ -119,6 +120,7 @@ export const modalSubmit = () => async (dispatch, getState) => {
     id: result.data.data.id,
     name: getState().modal.name
   };
+  LocalStorage.setObj('from', fromUserObj);
   setupSocket(result.data.data.id);
   dispatch(setFromUser(fromUserObj));
   dispatch(fetchToUser());
