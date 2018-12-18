@@ -156,7 +156,14 @@ export default (app) => {
       res.json(new Response().setError(err).toJson());
       return;
     });
+    // TODO: setup namespace
     res.json(new Response().setData(user).toJson());
     return;
+  });
+
+  app.put('/setup-namespace', (req, res) => {
+    const id = randomWords({ exactly: 2, join: '-' });
+    sockets.setupUserNamespace(id);
+    res.json(new Response().setData({ id }).toJson());
   });
 };
