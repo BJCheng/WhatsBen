@@ -14,3 +14,4 @@ export const CLOSE_MODAL = 'CLOSE_MODAL';
 export const MODAL_CHANGE_NAME = 'MODAL_CHANGE_NAME';
 export const SET_TO_ID = 'SET_TO_ID';
 export const HIDE_MODAL = 'HIDE_MODAL';
+export const FROM_READY = 'FROM_READY';

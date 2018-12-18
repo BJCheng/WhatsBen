@@ -2,7 +2,7 @@ import {
   CHANGE_INPUT, APPEND_MESSAGE, CLEAR_INPUT, REDIRECT_TO_LOGIN,
   FETCH_TO_USER, SET_FROM_USER, RENDER_MODAL, MODAL_CHANGE_NAME,
   CHAT_READY, RECEIVE_MESSAGES, UPDATE_MESSAGE, RECEIVE_MESSAGE,
-  CLOSE_MODAL, SET_TO_ID, HIDE_MODAL
+  CLOSE_MODAL, SET_TO_ID, HIDE_MODAL, FROM_READY
 } from './types';
 import api from './api';
 import setupSocket from '../utils/setup-socket';
@@ -36,6 +36,9 @@ export const setFromUser = fromUserObj => dispatch => {
   dispatch({
     type: SET_FROM_USER,
     fromUserObj
+  });
+  dispatch({
+    type: FROM_READY
   });
 };
 

@@ -6,6 +6,7 @@ import fromReducer from './from-reducer';
 import toReducer from './to-reducer';
 import modalReducer from './modal-reducer';
 import chatReadyReducer from './chat-ready-reducer';
+import fromReadyReducer from './from-ready-reducer';
 
 export default combineReducers({
   header: headerReducer,
@@ -14,5 +15,6 @@ export default combineReducers({
   from: fromReducer,
   to: toReducer,
   modal: modalReducer,
-  chatReady: chatReadyReducer
+  chatReady: chatReadyReducer,
+  fromReady: fromReadyReducer
 });

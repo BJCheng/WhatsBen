@@ -47,7 +47,7 @@ class App extends React.Component {
   }
 
   renderChat = () => {
-    if (!this.props.chatReady)
+    if (!this.props.chatReady || !this.props.fromReady)
       return;
     return (
       <div className='chat'>
@@ -59,7 +59,7 @@ class App extends React.Component {
   }
 
   renderLoading = () => {
-    if (this.props.chatReady)
+    if (this.props.chatReady && this.props.fromReady)
       return;
     return (
       <div className="lds-heart"><div></div></div>
@@ -71,7 +71,8 @@ const mapStateToProps = (state) => ({
   from: state.from,
   to: state.to,
   modal: state.modal,
-  chatReady: state.chatReady
+  chatReady: state.chatReady,
+  fromReady: state.fromReady
 });
 
 const mapDispatchToProps = (dispatch) => ({
