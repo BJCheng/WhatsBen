@@ -96,8 +96,9 @@ export default (app) => {
     res.json(new Response().setData(result).toJson());
   });
 
-  app.post('/messages', async (req, res, next) => {
-    const { from, to, text, sendTime } = req.body;
+  app.post('/message/:from/:to', async (req, res, next) => {
+    const { from, to } = req.params;
+    const { text, sendTime } = req.body;
     if (!from || !to || !text || !sendTime) {
       res.json(new Response().setError('Missing required fields'));
       return;
@@ -161,7 +162,7 @@ export default (app) => {
     return;
   });
 
-  app.put('/setup-namespace', (req, res) => {
+  app.post('/namespace', (req, res) => {
     const id = randomWords({ exactly: 2, join: '-' });
     sockets.setupUserNamespace(id);
     res.json(new Response().setData({ id }).toJson());

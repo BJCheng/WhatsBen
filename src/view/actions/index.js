@@ -1,11 +1,10 @@
 import {
   CHANGE_INPUT, APPEND_MESSAGE, CLEAR_INPUT, REDIRECT_TO_LOGIN,
-  RECEIVE_TO_USER, SET_FROM_USER, RENDER_MODAL, MODAL_CHANGE_NAME,
+  FETCH_TO_USER, SET_FROM_USER, RENDER_MODAL, MODAL_CHANGE_NAME,
   CHAT_READY, RECEIVE_MESSAGES, UPDATE_MESSAGE, RECEIVE_MESSAGE,
   CLOSE_MODAL, SET_TO_ID, HIDE_MODAL
 } from './types';
-import apis from './apis';
-import LocalStorage from '../utils/local-storage';
+import api from './api';
 import setupSocket from '../utils/setup-socket';
 
 export const changeInput = (text) => ({
@@ -18,14 +17,6 @@ export const appendMessage = (messageObj) => ({
   messageObj
 });
 
-export const sendMessage = ({ from, to, text, sendTime }) => async (dispatch) => {
-  const returnedMessage = await apis.sendMessages(from, to, text, sendTime);
-  // TODO: dispatch action to render picture of server received
-  // TODO: handle if returnedMessage contains errors
-  const data = JSON.parse(returnedMessage.data.data);
-  dispatch(updateMessage(data));
-};
-
 const updateMessage = (messageObj) => ({
   type: UPDATE_MESSAGE,
   messageObj
@@ -35,29 +26,11 @@ export const clearInput = () => ({
   type: CLEAR_INPUT
 });
 
-export const fetchToUser = () => async (dispatch, getState) => {
-  const id = getState().to.id;
-  const response = await apis.getUserById(id);
-  const data = response.data;
-  if (data.error || data.error.length > 0) {
-    // TODO: redirect to login page and display error message
-    dispatch(renderModalWithMsg('The user you are trying to make contact with is not exist.'));
-    return;
-  }
-  dispatch(receiveToUser(data.data));
-  dispatch(chatReady());
-};
-
-const receiveToUser = (toUserObj) => ({
-  type: RECEIVE_TO_USER,
-  toUserObj
-});
-
 export const redirectToLogin = () => ({
   type: REDIRECT_TO_LOGIN
 });
 
-export const setFromUser = (fromUserObj) => (dispatch, getState) => {
+export const setFromUser = fromUserObj => dispatch => {
   const { id } = fromUserObj;
   setupSocket(id, dispatch);
   dispatch({
@@ -66,25 +39,13 @@ export const setFromUser = (fromUserObj) => (dispatch, getState) => {
   });
 };
 
-export const renderModalWithMsg = (message) => ({
+export const renderModalWithMsg = message => ({
   type: RENDER_MODAL,
   message
 });
 
-export const fetchMessagesBetween = (from, to) => async (dispatch, getState) => {
-  const messages = await apis.fetchMessgeasBetween(from, to);
-  if (!messages.data || messages.data.error)
-    return;
-  dispatch(receiveMessages(messages.data.data));
-};
-
 export const chatReady = () => ({
   type: CHAT_READY
-});
-
-export const receiveMessages = (messages) => ({
-  type: RECEIVE_MESSAGES,
-  messages
 });
 
 export const receiveMessage = (messageObj) => ({
@@ -101,8 +62,52 @@ export const modalChangeName = (name) => ({
   name
 });
 
+export const setToId = (id) => ({
+  type: SET_TO_ID,
+  id
+});
+
+export const hideModal = () => ({
+  type: HIDE_MODAL
+});
+
+export const sendMessage = ({ from, to, text, sendTime }) => async (dispatch) => {
+  const returnedMessage = await api.post(`/message/${from}/${to}`, { text, sendTime });
+  // TODO: dispatch action to render picture of server received
+  // TODO: handle if returnedMessage contains errors
+  const data = JSON.parse(returnedMessage.data.data);
+  dispatch(updateMessage(data));
+};
+
+export const fetchToUser = () => async (dispatch, getState) => {
+  const id = getState().to.id;
+  const response = await api.get(`/user/${id}`);
+  const data = response.data;
+  if (data.error || data.error.length > 0) {
+    // TODO: redirect to login page and display error message
+    dispatch(renderModalWithMsg('The user you are trying to make contact with is not exist.'));
+    return;
+  }
+
+  dispatch({
+    type: FETCH_TO_USER,
+    toUserObj: data.data
+  });
+  dispatch(chatReady());
+};
+
+export const fetchMessagesBetween = (from, to) => async dispatch => {
+  const response = await api.get(`/messages/${from}/${to}`);
+  if (!response.data || response.data.error)
+    return;
+  dispatch({
+    type: RECEIVE_MESSAGES,
+    messages: response.data.data
+  });
+};
+
 export const modalSubmit = () => async (dispatch, getState) => {
-  const result = await apis.setupNamespace();
+  const result = await api.post('/namespace');
   if (result.data.error && result.data.error.length > 0) {
     console.error('setup socket faild');
     return;
@@ -117,12 +122,3 @@ export const modalSubmit = () => async (dispatch, getState) => {
   dispatch(fetchToUser());
   dispatch(hideModal());
 };
-
-export const setToId = (id) => ({
-  type: SET_TO_ID,
-  id
-});
-
-export const hideModal = () => ({
-  type: HIDE_MODAL
-});
