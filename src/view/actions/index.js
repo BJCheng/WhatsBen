@@ -121,7 +121,6 @@ export const modalSubmit = () => async (dispatch, getState) => {
   };
   setupSocket(result.data.data.id);
   dispatch(setFromUser(fromUserObj));
-  // dispatch(fromReady());
   dispatch(fetchToUser());
   dispatch(hideModal());
 };
