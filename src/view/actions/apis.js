@@ -7,5 +7,6 @@ const baseUrl = axios.create({
 export default {
   getUserById: (id) => (baseUrl.get(`/user/${id}`)),
   fetchMessgeasBetween: (from, to) => baseUrl.get(`/messages/${from}/${to}`),
-  sendMessages : (from, to, text, sendTime) => baseUrl.post('/messages', {from, to, text, sendTime})
+  sendMessages: (from, to, text, sendTime) => baseUrl.post('/messages', { from, to, text, sendTime }),
+  setupNamespace: () => baseUrl.put('/setup-namespace')
 };

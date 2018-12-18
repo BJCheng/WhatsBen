@@ -3,8 +3,12 @@ import { connect } from 'react-redux';
 import HeaderContainer from './header/header-container.jsx';
 import BodyContainer from './body/body-container.jsx';
 import FooterContainer from './footer/footer-container.jsx';
+import Modal from './Modal.jsx';
 import './styles/app.scss';
-import { fetchToUser, setFromUser, renderModalWithMsg } from '../actions';
+import {
+  fetchToUser, setFromUser, renderModalWithMsg,
+  closeModal, modalChangeName, modalSubmit, setToId
+} from '../actions';
 import LocalStorage from '../utils/local-storage';
 
 class App extends React.Component {
@@ -15,7 +19,8 @@ class App extends React.Component {
 
   componentDidMount() {
     const { toName } = this.props.match.params;
-    this.props.initiateApp(toName);
+    this.props.setToId(toName);
+    this.props.initiateApp();
   }
 
   render() {
@@ -32,7 +37,12 @@ class App extends React.Component {
     if (!this.props.modal.render)
       return;
     return (
-      <div>{this.props.modal.message}</div>
+      <Modal
+        modal={{ ...this.props.modal }}
+        closeModal={this.props.closeModal}
+        onChangeName={this.props.onChangeName}
+        onModalSubmit={this.props.onModalSubmit}
+      />
     );
   }
 
@@ -65,14 +75,26 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  initiateApp: (toId) => {
+  initiateApp: () => {
     const fromUserObj = LocalStorage.getObj('from');
     if (!fromUserObj) {
-      dispatch(renderModalWithMsg('It is your first time login, please tell us your preferrable way to be called.'));
+      dispatch(renderModalWithMsg('It seems to be your first time here, please tell us your preferrable way to be called.'));
       return;
     }
     dispatch(setFromUser(fromUserObj));
-    dispatch(fetchToUser(toId));
+    dispatch(fetchToUser());
+  },
+  setToId: (id) => {
+    dispatch(setToId(id));
+  },
+  closeModal: () => {
+    dispatch(closeModal());
+  },
+  onChangeName: (event) => {
+    dispatch(modalChangeName(event.target.value));
+  },
+  onModalSubmit: () => {
+    dispatch(modalSubmit())
   }
 });
 
