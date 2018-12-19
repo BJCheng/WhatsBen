@@ -8,7 +8,8 @@ import Modal from './Modal.jsx';
 import './styles/app.scss';
 import {
   fetchToUser, setFromUser, renderModalWithMsg,
-  closeModal, modalChangeName, modalSubmit, setToId
+  closeModal, modalChangeName, modalSubmit, setToId,
+  fetchContacts
 } from '../actions';
 import LocalStorage from '../utils/local-storage';
 
@@ -30,7 +31,6 @@ class App extends React.Component {
         {this.renderChat()}
         {this.renderModal()}
         {this.renderLoading()}
-        {this.renderContacts()}
       </div>
     );
   }
@@ -49,13 +49,14 @@ class App extends React.Component {
   }
 
   renderChat = () => {
-    if (!this.props.chatReady || !this.props.fromReady)
+    if (!this.props.chatReady || !this.props.fromReady || !this.props.contactsReady)
       return;
     return (
       <div className='chat'>
         <HeaderContainer />
         <BodyContainer />
         <FooterContainer />
+        <Contacts contacts={this.props.contacts} />
       </div>
     );
   }
@@ -67,11 +68,6 @@ class App extends React.Component {
       <div className="lds-heart"><div></div></div>
     );
   }
-
-  renderContacts = () => {
-    if (this.props.registeredUser)
-      return <Contacts />;
-  }
 }
 
 const mapStateToProps = (state) => ({
@@ -80,7 +76,9 @@ const mapStateToProps = (state) => ({
   modal: state.modal,
   chatReady: state.chatReady,
   fromReady: state.fromReady,
-  registeredUser: state.registeredUser
+  contacts: state.contacts,
+  registeredUser: state.registeredUser,
+  contactsReady: state.contactsReady
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -92,6 +90,7 @@ const mapDispatchToProps = (dispatch) => ({
     }
     dispatch(setFromUser(fromUserObj));
     dispatch(fetchToUser());
+    dispatch(fetchContacts());
   },
   setToId: (id) => {
     dispatch(setToId(id));

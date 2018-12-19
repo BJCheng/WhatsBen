@@ -6,7 +6,7 @@ export default (state = [], action) => {
       return action.contacts;
     case UPDATE_CONTACT:
       return [action.id].concat(state.map(id => {
-        if (id === action.value)
+        if (id === action.id)
           return;
         else
           return id;

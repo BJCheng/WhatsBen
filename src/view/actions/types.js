@@ -18,3 +18,4 @@ export const FROM_READY = 'FROM_READY';
 export const FETCH_CONTACTS = 'FETCH_CONTACTS';
 export const UPDATE_CONTACT = 'UPDATE_CONTACT';
 export const LOGIN = 'LOGIN';
+export const CONTACTS_READY = 'CONTACTS_READY';

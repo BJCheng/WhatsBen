@@ -2,7 +2,8 @@ import {
   CHANGE_INPUT, APPEND_MESSAGE, CLEAR_INPUT, REDIRECT_TO_LOGIN,
   FETCH_TO_USER, SET_FROM_USER, RENDER_MODAL, MODAL_CHANGE_NAME,
   CHAT_READY, RECEIVE_MESSAGES, UPDATE_MESSAGE, RECEIVE_MESSAGE,
-  CLOSE_MODAL, SET_TO_ID, HIDE_MODAL, FROM_READY
+  CLOSE_MODAL, SET_TO_ID, HIDE_MODAL, FROM_READY, UPDATE_CONTACT,
+  FETCH_CONTACTS, CONTACTS_READY
 } from './types';
 import api from './api';
 import setupSocket from '../utils/setup-socket';
@@ -127,7 +128,18 @@ export const modalSubmit = () => async (dispatch, getState) => {
   dispatch(hideModal());
 };
 
-export const updateContact = async (id) => ({
+export const updateContact = (id) => ({
   type: UPDATE_CONTACT,
   id
 });
+
+export const fetchContacts = () => async (dispatch, getState) => {
+  const contacts = await api.get(`/contacts/${getState().from.id}`);
+  dispatch({
+    type: FETCH_CONTACTS,
+    contacts: contacts.data
+  });
+  dispatch({
+    type: CONTACTS_READY
+  });
+};

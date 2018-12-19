@@ -7,6 +7,7 @@ import toReducer from './to-reducer';
 import modalReducer from './modal-reducer';
 import chatReadyReducer from './chat-ready-reducer';
 import fromReadyReducer from './from-ready-reducer';
+import contactsReadyReducer from './contacts-ready-reducer';
 import contactsReducer from './contacts-reducer';
 import registeredUserReducer from './registered-user-reducer';
 
@@ -19,6 +20,7 @@ export default combineReducers({
   modal: modalReducer,
   chatReady: chatReadyReducer,
   fromReady: fromReadyReducer,
+  contactsReady: contactsReadyReducer,
   contacts: contactsReducer,
   registeredUser: registeredUserReducer
 });

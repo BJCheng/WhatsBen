@@ -6,6 +6,8 @@ export default class Contacts extends React.Component {
   }
 
   render() {
-    return <div>Contacts</div>;
+    return this.props.contacts.map(contact => {
+      return <div>{contact}</div>;
+    });
   }
 }
