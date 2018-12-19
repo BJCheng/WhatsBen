@@ -35,5 +35,8 @@ export const redisKeys = {
       return `messages:${fromId}|${toId}`;
     else
       return `messages:${toId}|${fromId}`;
+  },
+  getContacts(id) {
+    return `contacts:${id}`;
   }
 };

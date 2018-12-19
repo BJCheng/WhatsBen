@@ -111,18 +111,15 @@ export default (app) => {
       serverReceiveTime: Date.now()
     };
     const messageJson = JSON.stringify(messageObj);
-    await redisClient.rpushAsync(redisKeys.getMessages(from, to), messageJson).catch(err => {
-      next(err);
-    });
-    res.json(new Response().setData(messageJson).toJson());
+    await redisClient.rpushAsync(redisKeys.getMessages(from, to), messageJson).catch(err => { console.error(err); });
+    await redisClient.zaddAsync(redisKeys.getContacts(from), Date.now(), to).catch(err => { console.error(err); });
     sockets.emit('receive-message', `/${to}`, messageObj); // especially test if json string can be emitted or not
+    res.json(new Response().setData(messageJson).toJson());
   });
 
   app.get('/user/:id', async (req, res) => {
     const { id } = req.params;
-    const result = await redisClient.hgetallAsync(redisKeys.getUser(id)).catch(err => {
-      console.error(err);
-    });
+    const result = await redisClient.hgetallAsync(redisKeys.getUser(id)).catch(err => { console.error(err); });
     if (!result) {
       res.json(new Response().setError(`no such user: ${id}`).toJson());
       return;
@@ -166,5 +163,11 @@ export default (app) => {
     const id = randomWords({ exactly: 2, join: '-' });
     sockets.setupUserNamespace(id);
     res.json(new Response().setData({ id }).toJson());
+  });
+
+  app.get('/contacts/:id', async (req, res, next) => {
+    const { id } = req.params;
+    const contacts = await redisClient.zrevrangeAsync(redisKeys.getContacts(id), 0, -1).catch(err => { console.error(err); });
+    res.json(contacts);
   });
 };
