@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import HeaderContainer from './header/header-container.jsx';
 import BodyContainer from './body/body-container.jsx';
 import FooterContainer from './footer/footer-container.jsx';
+import Contacts from './Contacts.jsx';
 import Modal from './Modal.jsx';
 import './styles/app.scss';
 import {
@@ -29,6 +30,7 @@ class App extends React.Component {
         {this.renderChat()}
         {this.renderModal()}
         {this.renderLoading()}
+        {this.renderContacts()}
       </div>
     );
   }
@@ -65,6 +67,11 @@ class App extends React.Component {
       <div className="lds-heart"><div></div></div>
     );
   }
+
+  renderContacts = () => {
+    if (this.props.registeredUser)
+      return <Contacts />;
+  }
 }
 
 const mapStateToProps = (state) => ({
@@ -72,7 +79,8 @@ const mapStateToProps = (state) => ({
   to: state.to,
   modal: state.modal,
   chatReady: state.chatReady,
-  fromReady: state.fromReady
+  fromReady: state.fromReady,
+  registeredUser: state.registeredUser
 });
 
 const mapDispatchToProps = (dispatch) => ({

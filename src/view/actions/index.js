@@ -126,3 +126,8 @@ export const modalSubmit = () => async (dispatch, getState) => {
   dispatch(fetchToUser());
   dispatch(hideModal());
 };
+
+export const updateContact = async (id) => ({
+  type: UPDATE_CONTACT,
+  id
+});
