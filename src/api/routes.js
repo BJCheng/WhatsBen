@@ -113,6 +113,7 @@ export default (app) => {
     const messageJson = JSON.stringify(messageObj);
     await redisClient.rpushAsync(redisKeys.getMessages(from, to), messageJson).catch(err => { console.error(err); });
     await redisClient.zaddAsync(redisKeys.getContacts(from), Date.now(), to).catch(err => { console.error(err); });
+    await redisClient.zaddAsync(redisKeys.getContacts(to), Date.now(), from).catch(err => { console.error(err); });
     sockets.emit('receive-message', `/${to}`, messageObj); // especially test if json string can be emitted or not
     res.json(new Response().setData(messageJson).toJson());
   });
