@@ -76,6 +76,15 @@ export const hideModal = () => ({
   type: HIDE_MODAL
 });
 
+export const updateContact = (id) => ({
+  type: UPDATE_CONTACT,
+  id
+});
+
+export const contactsReady = () => ({
+  type: CONTACTS_READY
+});
+
 export const sendMessage = ({ from, to, text, sendTime }) => async (dispatch) => {
   const returnedMessage = await api.post(`/message/${from}/${to}`, { text, sendTime });
   // TODO: dispatch action to render picture of server received
@@ -126,12 +135,8 @@ export const modalSubmit = () => async (dispatch, getState) => {
   dispatch(setFromUser(fromUserObj));
   dispatch(fetchToUser());
   dispatch(hideModal());
+  dispatch(contactsReady());
 };
-
-export const updateContact = (id) => ({
-  type: UPDATE_CONTACT,
-  id
-});
 
 export const fetchContacts = () => async (dispatch, getState) => {
   const contacts = await api.get(`/contacts/${getState().from.id}`);
@@ -139,7 +144,5 @@ export const fetchContacts = () => async (dispatch, getState) => {
     type: FETCH_CONTACTS,
     contacts: contacts.data
   });
-  dispatch({
-    type: CONTACTS_READY
-  });
+  dispatch(contactsReady());
 };

@@ -62,7 +62,7 @@ class App extends React.Component {
   }
 
   renderLoading = () => {
-    if (this.props.chatReady && this.props.fromReady)
+    if (this.props.chatReady && this.props.fromReady && this.props.contactsReady)
       return;
     return (
       <div className="lds-heart"><div></div></div>
