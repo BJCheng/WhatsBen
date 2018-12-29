@@ -10,6 +10,7 @@ import fromReadyReducer from './from-ready-reducer';
 import contactsReadyReducer from './contacts-ready-reducer';
 import contactsReducer from './contacts-reducer';
 import registeredUserReducer from './registered-user-reducer';
+import loginReducer from './login-reducer';
 
 export default combineReducers({
   header: headerReducer,
@@ -22,5 +23,6 @@ export default combineReducers({
   fromReady: fromReadyReducer,
   contactsReady: contactsReadyReducer,
   contacts: contactsReducer,
-  registeredUser: registeredUserReducer
+  registeredUser: registeredUserReducer,
+  login: loginReducer
 });
