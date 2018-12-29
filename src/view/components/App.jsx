@@ -102,7 +102,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(modalChangeName(event.target.value));
   },
   onModalSubmit: () => {
-    dispatch(modalSubmit())
+    dispatch(modalSubmit());
   }
 });
 
