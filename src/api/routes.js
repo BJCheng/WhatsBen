@@ -128,37 +128,21 @@ export default (app) => {
     res.json(new Response().setData(result).toJson());
   });
 
-  app.post('/user', async (req, res) => {
-    const { name } = req.body;
-    if (!name) {
-      res.json(new Response().setError('Missing user name.').toJson());
-      return;
-    }
+  app.post('/user/:name', wrapAsync(async (req, res, next) => {
+    const { name } = req.params;
+    if (!name)
+      throw new Error('Missing user name.');
 
     const id = name === 'ben' ? 'ben' : name === 'niu' ? 'niu' : randomWords({ exactly: 2, join: '-' });
-    const result = await redisClient.existsAsync(redisKeys.getUser(id)).catch(err => {
-      res.json(new Response().setError(err));
-      return;
-    });
-    if (result === 1) {
-      const response = new Response().setError(`user id: ${id} already exist`);
-      res.json(response.toJson());
-      return;
-    }
+    const result = await redisClient.existsAsync(redisKeys.getUser(id)).catch(next);
+    if (result === 1)
+      throw new Error(`user id '${id}' already exist`);
 
-    const user = {
-      id,
-      name,
-      lastSeen: Date.now()
-    };
-    await redisClient.hsetAsync(redisKeys.getUser(id), 'id', id, 'name', user.name, 'lastSeen', user.lastSeen).catch(err => {
-      res.json(new Response().setError(err).toJson());
-      return;
-    });
+    const user = { id, name, lastSeen: Date.now() };
+    await redisClient.hsetAsync(redisKeys.getUser(id), 'id', id, 'name', user.name, 'lastSeen', user.lastSeen).catch(next);
     // TODO: setup namespace
-    res.json(new Response().setData(user).toJson());
-    return;
-  });
+    res.json(user);
+  }));
 
   app.post('/namespace', (req, res) => {
     const id = randomWords({ exactly: 2, join: '-' });
@@ -171,4 +155,24 @@ export default (app) => {
     const contacts = await redisClient.zrevrangeAsync(redisKeys.getContacts(id), 0, -1).catch(err => { console.error(err); });
     res.json(contacts);
   });
+
+  app.get('/test-error', wrapAsync(async (req, res, next) => {
+    throw new Error('a');
+    // return new Promise((resolve) => {
+    //   resolve();
+    // }).then(() => {
+    //   next(new Error('b'));
+    //   // res.json({hi: 'hi'}); // 會錯
+    // }).catch(next);
+  }));
+
+  app.use((error, req, res, next) => {
+    res.status(400).json({ message: error.message });
+  });
+
+  function wrapAsync(fn) {
+    return function (req, res, next) {
+      fn(req, res, next).catch(next);
+    };
+  }
 };
