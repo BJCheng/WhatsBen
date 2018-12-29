@@ -1,0 +1,16 @@
+@import './colors.scss';
+
+.login{
+  height: 100%;
+  width: 100%;
+  background-color: $login-background
+}
+
+.login-dialog{
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background-color: white;
+}
