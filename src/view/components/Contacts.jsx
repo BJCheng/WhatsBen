@@ -6,8 +6,14 @@ export default class Contacts extends React.Component {
   }
 
   render() {
-    return this.props.contacts.map(contact => {
-      return <div>{contact}</div>;
-    });
+    return (
+      <div>contacts:
+        {
+          (this.props.contacts || ['1']).map(contact => {
+            return <div>{contact}</div>;
+          })
+        }
+      </div>
+    );
   }
 }
