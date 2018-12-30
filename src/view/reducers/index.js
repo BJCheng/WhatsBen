@@ -11,6 +11,7 @@ import contactsReadyReducer from './contacts-ready-reducer';
 import contactsReducer from './contacts-reducer';
 import registeredUserReducer from './registered-user-reducer';
 import loginReducer from './login-reducer';
+import authReducer from './auth-reducer';
 
 export default combineReducers({
   header: headerReducer,
@@ -24,5 +25,6 @@ export default combineReducers({
   contactsReady: contactsReadyReducer,
   contacts: contactsReducer,
   registeredUser: registeredUserReducer,
-  login: loginReducer
+  login: loginReducer,
+  auth: authReducer
 });
