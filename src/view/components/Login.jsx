@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
   onIdChange, onPasswordChange, createUser,
-  switchToSignIn, switchToCreateAccount
+  switchToSignIn, switchToCreateAccount,
+  signIn
 } from '../actions/login';
 
 class Login extends React.Component {
@@ -55,7 +56,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(createUser);
   },
   onSignInSubmit: () => {
-
+    dispatch(signIn);
   },
   onCreateAccountTypeButtonClick: () => {
     dispatch(switchToCreateAccount());

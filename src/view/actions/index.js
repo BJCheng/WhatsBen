@@ -5,7 +5,7 @@ import {
   CLOSE_MODAL, SET_TO_ID, HIDE_MODAL, FROM_READY, UPDATE_CONTACT,
   FETCH_CONTACTS, CONTACTS_READY
 } from './types';
-import api from './api';
+import { api } from './api';
 import setupSocket from '../utils/setup-socket';
 import LocalStorage from '../utils/local-storage';
 
@@ -95,19 +95,17 @@ export const sendMessage = ({ from, to, text, sendTime }) => async (dispatch) =>
 
 export const fetchToUser = () => async (dispatch, getState) => {
   const id = getState().to.id;
-  const response = await api.get(`/user/${id}`);
-  const data = response.data;
-  if (data.error || data.error.length > 0) {
+  try {
+    const response = await api.get(`/user/${id}`);
+    dispatch({
+      type: FETCH_TO_USER,
+      toUserObj: response.data
+    });
+    dispatch(chatReady());
+  } catch (err) {
     // TODO: redirect to login page and display error message
     dispatch(renderModalWithMsg('The user you are trying to make contact with is not exist.'));
-    return;
   }
-
-  dispatch({
-    type: FETCH_TO_USER,
-    toUserObj: data.data
-  });
-  dispatch(chatReady());
 };
 
 export const fetchMessagesBetween = (from, to) => async dispatch => {

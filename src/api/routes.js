@@ -68,7 +68,7 @@ export default (app) => {
   //   }
   // });
 
-  app.get('verify', (req, res) => {
+  app.get('/verify', (req, res) => {
     const bearerToken = req.header('Authorization');
     const token = bearerToken.substring('Bearer '.length);
     const decoded = jwt.verify(token, handleSecret);
@@ -118,20 +118,31 @@ export default (app) => {
     res.json(new Response().setData(messageJson).toJson());
   });
 
-  app.get('/user/:id', async (req, res) => {
+  app.get('/user/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
     const result = await redisClient.hgetallAsync(redisKeys.getUser(id)).catch(err => { console.error(err); });
-    if (!result) {
-      res.json(new Response().setError(`no such user: ${id}`).toJson());
-      return;
-    }
-    res.json(new Response().setData(result).toJson());
-  });
+    if (!result)
+      throw new Error(`no such user: ${id}`);
+    res.json(result);
+  }));
+
+  app.post('/auth', wrapAsync(async (req, res) => {
+    const { id, password } = req.body;
+    const result = await redisClient.hgetallAsync(redisKeys.getUser(id)).catch(err => { console.error(err); });
+    if (!result)
+      throw new Error(`no such user: ${id}`);
+    if (password !== result.password)
+      throw new Error('incorrect id password combination');
+    res.json({result: true});
+  }));
 
   app.post('/user/:name', wrapAsync(async (req, res, next) => {
     const { name } = req.params;
+    const { password } = req.body;
     if (!name)
       throw new Error('Missing user name.');
+    if (!password)
+      throw new Error('Missing password.');
 
     const id = name === 'ben' ? 'ben' : name === 'niu' ? 'niu' : randomWords({ exactly: 2, join: '-' });
     const result = await redisClient.existsAsync(redisKeys.getUser(id)).catch(next);
@@ -139,7 +150,11 @@ export default (app) => {
       throw new Error(`user id '${id}' already exist`);
 
     const user = { id, name, lastSeen: Date.now() };
-    await redisClient.hsetAsync(redisKeys.getUser(id), 'id', id, 'name', user.name, 'lastSeen', user.lastSeen).catch(next);
+    await redisClient.hsetAsync(redisKeys.getUser(id),
+      'id', id,
+      'name', user.name,
+      'password', password,
+      'lastSeen', user.lastSeen).catch(next);
     // TODO: setup namespace
     res.json(user);
   }));
@@ -155,16 +170,6 @@ export default (app) => {
     const contacts = await redisClient.zrevrangeAsync(redisKeys.getContacts(id), 0, -1).catch(err => { console.error(err); });
     res.json(contacts);
   });
-
-  app.get('/test-error', wrapAsync(async (req, res, next) => {
-    throw new Error('a');
-    // return new Promise((resolve) => {
-    //   resolve();
-    // }).then(() => {
-    //   next(new Error('b'));
-    //   // res.json({hi: 'hi'}); // 會錯
-    // }).catch(next);
-  }));
 
   app.use((error, req, res, next) => {
     res.status(400).json({ message: error.message });
