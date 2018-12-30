@@ -4,7 +4,7 @@ const initialState = {};
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_AUTH:
-      return action.auth;
+      return { ...state, ...action.auth };
     default:
       return state;
   }

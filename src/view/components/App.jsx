@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import LocalStorage from '../utils/local-storage';
 import { setAuth } from '../actions/auth';
+import { isObjectEmpty } from '../utils/helpers';
 
 class App extends React.Component {
   constructor(props) {
@@ -10,8 +11,9 @@ class App extends React.Component {
   }
 
   render() {
-    if (Object.keys(this.props.auth).length === 0 && this.props.auth.constructor === Object)
-      return <Redirect to='/login'/>;
+    if (isObjectEmpty(this.props.auth))
+      return <Redirect to='/login' />;
+    return <div>app</div>;
   }
 
   componentDidMount() {

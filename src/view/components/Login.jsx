@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import {
   onIdChange, onPasswordChange, createUser,
   switchToSignIn, switchToCreateAccount,
   signIn
 } from '../actions/login';
+import { isObjectEmpty } from '../utils/helpers';
 
 class Login extends React.Component {
   constructor(props) {
@@ -12,16 +14,21 @@ class Login extends React.Component {
   }
 
   render() {
-    return (
-      <div className='login'>
-        <div className='login-dialog'>
-          <input placeholder='ID' value={this.props.id} onChange={this.props.onIdChange} />
-          <input placeholder='Password' type='password' value={this.props.password} onChange={this.props.onPasswordChange} />
-          {this.renderSubmitButton()}
-          {this.renderTypeButton()}
+    if (isObjectEmpty(this.props.auth)) {
+      return (
+        <div className='login'>
+          <div className='login-dialog'>
+            <input placeholder='ID' value={this.props.id} onChange={this.props.onIdChange} />
+            <input placeholder='Password' type='password' value={this.props.password} onChange={this.props.onPasswordChange} />
+            {this.renderSubmitButton()}
+            {this.renderTypeButton()}
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
+    else {
+      return <Redirect to='/' />;
+    }
   }
 
   renderSubmitButton = () => {
@@ -42,7 +49,8 @@ class Login extends React.Component {
 const mapStateToProps = (state) => ({
   id: state.login.id,
   password: state.login.password,
-  isCreateAccount: state.login.isCreateAccount
+  isCreateAccount: state.login.isCreateAccount,
+  auth: state.auth
 });
 
 const mapDispatchToProps = (dispatch) => ({

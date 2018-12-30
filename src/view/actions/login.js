@@ -3,6 +3,9 @@ import {
   SWITCH_TO_SIGN_IN, SWITCH_TO_CREATE_ACCOUNT
 } from '../actions/types';
 import { api, apiErrorHandler } from '../actions/api';
+import { setAuth } from './auth';
+import { setFromUser } from '.';
+import LocalStorage from '../utils/local-storage';
 
 export const onPasswordChange = (value) => ({
   type: ON_PASSWORD_CHANGE,
@@ -17,11 +20,11 @@ export const onIdChange = (value) => ({
 export const createUser = async (dispatch, getState) => {
   const state = getState();
   const { id, password } = state.login;
-  const result = await api.post(`/user/${id}`).catch(err => {
-    console.error(JSON.stringify(err));
-  });
-  // dispatch action to screen only has contacts but not chat
-  // chat will be render only after click on a contact
+  const result = await api.post(`/user/${id}`, { password }).catch(err => { console.error(JSON.stringify(err)); });
+  dispatch(setAuth(result.data));
+  dispatch(setFromUser(result.data));
+  LocalStorage.setObj('auth', result.data);
+  LocalStorage.setObj('from', result.data);
 };
 
 export const switchToSignIn = () => ({
@@ -34,11 +37,11 @@ export const switchToCreateAccount = () => ({
 
 export const signIn = async (dispatch, getState) => {
   const state = getState();
-  const { id, password } = state.signIn;
+  const { id, password } = state.login;
   const result = await api.post('/auth').catch((err) => {
     //TODO
     dispatch(renderErrorMessage(err.message));
   });
-  //TODO: goto contacts page
+  //TODO: goto contacts page by updating 'login' in local storage and 'from'
   dispatch();
 };
