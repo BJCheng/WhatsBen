@@ -1,111 +1,36 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import HeaderContainer from './header/header-container.jsx';
-import BodyContainer from './body/body-container.jsx';
-import FooterContainer from './footer/footer-container.jsx';
-import Contacts from './Contacts.jsx';
-import Modal from './Modal.jsx';
-import './styles/app.scss';
-import {
-  fetchToUser, setFromUser, renderModalWithMsg,
-  closeModal, modalChangeName, modalSubmit, setToId,
-  fetchContacts
-} from '../actions';
+import { Redirect } from 'react-router';
 import LocalStorage from '../utils/local-storage';
+import { setAuth } from '../actions/auth';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.renderModal = this.renderModal.bind(this);
-  }
-
-  componentDidMount() {
-    const { toName } = this.props.match.params;
-    this.props.setToId(toName);
-    this.props.initiateApp();
   }
 
   render() {
-    return (
-      <div style={{ height: '100%', backgroundColor: '#F2F2F2' }}>
-        {this.renderChat()}
-        {this.renderModal()}
-        {this.renderLoading()}
-      </div>
-    );
+    if (Object.keys(this.props.auth).length === 0 && this.props.auth.constructor === Object)
+      return <Redirect to='/login'/>;
   }
 
-  renderModal() {
-    if (!this.props.modal.render)
-      return;
-    return (
-      <Modal
-        modal={{ ...this.props.modal }}
-        closeModal={this.props.closeModal}
-        onChangeName={this.props.onChangeName}
-        onModalSubmit={this.props.onModalSubmit}
-      />
-    );
-  }
-
-  renderChat = () => {
-    if (!this.props.chatReady || !this.props.fromReady || !this.props.contactsReady)
-      return;
-    return (
-      <div className='chat'>
-        <HeaderContainer />
-        <BodyContainer />
-        <FooterContainer />
-        <Contacts contacts={this.props.contacts} />
-      </div>
-    );
-  }
-
-  renderLoading = () => {
-    if (this.props.chatReady && this.props.fromReady && this.props.contactsReady)
-      return;
-    return (
-      <div className="lds-heart"><div></div></div>
-    );
+  componentDidMount() {
+    this.props.initiateApp();
   }
 }
 
 const mapStateToProps = (state) => ({
-  from: state.from,
-  to: state.to,
-  modal: state.modal,
-  chatReady: state.chatReady,
-  fromReady: state.fromReady,
-  contacts: state.contacts,
-  registeredUser: state.registeredUser,
-  contactsReady: state.contactsReady
+  auth: state.auth,
+  contacts: state.contacts
 });
 
 const mapDispatchToProps = (dispatch) => ({
   initiateApp: () => {
-    const fromUserObj = LocalStorage.getObj('from');
-    if (!fromUserObj) {
-      dispatch(renderModalWithMsg('It seems to be your first time here, please tell us your preferrable way to be called.'));
-      return;
-    }
-    dispatch(setFromUser(fromUserObj));
-    dispatch(fetchToUser());
-    dispatch(fetchContacts());
+    const auth = LocalStorage.getObj('auth') || {};
+    dispatch(setAuth(auth));
   },
-  setToId: (id) => {
-    dispatch(setToId(id));
-  },
-  closeModal: () => {
-    dispatch(closeModal());
-  },
-  onChangeName: (event) => {
-    dispatch(modalChangeName(event.target.value));
-  },
-  onModalSubmit: () => {
-    dispatch(modalSubmit());
-  }
+
+  fetchContacts: () => { }
 });
 
-export default connect(
-  mapStateToProps, mapDispatchToProps
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
