@@ -15,10 +15,11 @@ class Login extends React.Component {
 
   render() {
     if (isObjectEmpty(this.props.auth)) {
+      const idNamePlaceholder = this.props.isCreateAccount ? 'Name' : 'ID';
       return (
         <div className='login'>
           <div className='login-dialog'>
-            <input placeholder='ID' value={this.props.id} onChange={this.props.onIdChange} />
+            <input placeholder={idNamePlaceholder} value={this.props.id} onChange={this.props.onIdChange} />
             <input placeholder='Password' type='password' value={this.props.password} onChange={this.props.onPasswordChange} />
             {this.renderSubmitButton()}
             {this.renderTypeButton()}
