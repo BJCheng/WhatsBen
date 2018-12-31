@@ -44,7 +44,6 @@ export const signIn = async (dispatch, getState) => {
     //TODO
     dispatch(renderErrorMessage(err.message));
   });
-  //TODO: goto contacts page by updating 'login' in local storage and 'from'
   dispatch(setAuth(result.data));
   dispatch(setFromUser(result.data));
   LocalStorage.setObj('auth', result.data);

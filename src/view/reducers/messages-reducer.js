@@ -13,7 +13,7 @@ export default (state = [], action) => {
       return [...action.messages.map(msg => JSON.parse(msg))];
     }
     case UPDATE_MESSAGE: {
-      // TODO: refacto, 太醜了
+      // TODO: refactor, 太醜了
       const newMessageObj = action.messageObj;
       const newState = [...state];
       newState.forEach(msg => {
