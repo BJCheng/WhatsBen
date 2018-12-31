@@ -6,7 +6,7 @@ import { api, apiErrorHandler } from '../actions/api';
 import { setAuth } from './auth';
 import { setFromUser } from '.';
 import LocalStorage from '../utils/local-storage';
-import setupSocket from '../utils/setup-socket';
+import setupClientSocket from '../utils/setup-client-socket';
 
 export const onPasswordChange = (value) => ({
   type: ON_PASSWORD_CHANGE,
@@ -26,7 +26,7 @@ export const createUser = async (dispatch, getState) => {
   dispatch(setFromUser(result.data));
   LocalStorage.setObj('auth', result.data);
   LocalStorage.setObj('from', result.data);
-  setupSocket(id, dispatch);
+  setupClientSocket(id, dispatch);
 };
 
 export const switchToSignIn = () => ({
@@ -48,5 +48,5 @@ export const signIn = async (dispatch, getState) => {
   dispatch(setFromUser(result.data));
   LocalStorage.setObj('auth', result.data);
   LocalStorage.setObj('from', result.data);
-  setupSocket(id, dispatch);
+  setupClientSocket(id, dispatch);
 };
