@@ -84,14 +84,15 @@ export default (app) => {
     await redisClient.rpushAsync(redisKeys.getMessages(from, to), messageJson).catch(e => { throw new Error(e); });
     await redisClient.zaddAsync(redisKeys.getContacts(from), Date.now(), to).catch(e => { throw new Error(e); });
     await redisClient.zaddAsync(redisKeys.getContacts(to), Date.now(), from).catch(e => { throw new Error(e); });
-    const isFromTemp = redisClient.sismemberAsync(redisKeys.getTempUsers(), from).catch(e => { throw new Error(e); });
-    const isToTemp = redisClient.sismemberAsync(redisKeys.getTempUsers(), from).catch(e => { throw new Error(e); });
-    if (isFromTemp || isToTemp)
-      redisClient.expire(redisKeys.getMessages(from, to), ONE_MONTH_IN_SECONDS);
-    if (isFromTemp)
-      redisClient.expireAsync(redisKeys.getContacts(from), ONE_MONTH_IN_SECONDS);
-    if (isToTemp)
-      redisClient.expireAsync(redisKeys.getContacts(to), ONE_MONTH_IN_SECONDS);
+    const isFromTemp = await redisClient.sismemberAsync(redisKeys.getTempUsers(), from).catch(e => { throw new Error(e); });
+    const isToTemp = await redisClient.sismemberAsync(redisKeys.getTempUsers(), to).catch(e => { throw new Error(e); });
+    console.log(`isFromTemp: ${isFromTemp}, isToTemp: ${isToTemp}`);
+    if (isFromTemp === 1 || isToTemp === 1)
+      redisClient.expire(redisKeys.getMessages(from, to), 20);
+    if (isFromTemp === 1)
+      redisClient.expireAsync(redisKeys.getContacts(from), 20);
+    if (isToTemp === 1)
+      redisClient.expireAsync(redisKeys.getContacts(to), 20);
     sockets.emit('receive-message', `/${to}`, messageObj); // double check that if json string can be emitted or not
     res.json(new Response().setData(messageJson).toJson());
   }));
@@ -150,7 +151,10 @@ export default (app) => {
   app.get('/contacts/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
     const contacts = await redisClient.zrevrangeAsync(redisKeys.getContacts(id), 0, -1).catch(e => { throw new Error(e); });
-    res.json(contacts);
+    const sortedUser = await Promise.all(contacts.map(async id => {
+      return await redisClient.hgetallAsync(redisKeys.getUser(id)).catch(e => { throw new Error(e); });
+    }));
+    res.json(sortedUser);
   }));
 
   app.use((error, req, res, next) => {
@@ -161,5 +165,9 @@ export default (app) => {
     return function (req, res, next) {
       fn(req, res, next).catch(next);
     };
+  }
+
+  function defaultErrHandling(e) {
+    throw new Error(e);
   }
 };
