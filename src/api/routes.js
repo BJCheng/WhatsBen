@@ -133,7 +133,7 @@ export default (app) => {
       throw new Error(`no such user: ${id}`);
     if (password !== result.password)
       throw new Error('incorrect id password combination');
-    res.json({result: true});
+    res.json({ ...result });
   }));
 
   app.post('/user/:name', wrapAsync(async (req, res, next) => {
@@ -155,7 +155,7 @@ export default (app) => {
       'name', user.name,
       'password', password,
       'lastSeen', user.lastSeen).catch(next);
-    // TODO: setup namespace
+    sockets.setupUserNamespace(id);
     res.json(user);
   }));
 

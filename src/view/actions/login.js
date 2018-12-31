@@ -6,6 +6,7 @@ import { api, apiErrorHandler } from '../actions/api';
 import { setAuth } from './auth';
 import { setFromUser } from '.';
 import LocalStorage from '../utils/local-storage';
+import setupSocket from '../utils/setup-socket';
 
 export const onPasswordChange = (value) => ({
   type: ON_PASSWORD_CHANGE,
@@ -25,6 +26,7 @@ export const createUser = async (dispatch, getState) => {
   dispatch(setFromUser(result.data));
   LocalStorage.setObj('auth', result.data);
   LocalStorage.setObj('from', result.data);
+  setupSocket(id, dispatch);
 };
 
 export const switchToSignIn = () => ({
@@ -38,10 +40,14 @@ export const switchToCreateAccount = () => ({
 export const signIn = async (dispatch, getState) => {
   const state = getState();
   const { id, password } = state.login;
-  const result = await api.post('/auth').catch((err) => {
+  const result = await api.post('/auth', { id, password }).catch((err) => {
     //TODO
     dispatch(renderErrorMessage(err.message));
   });
   //TODO: goto contacts page by updating 'login' in local storage and 'from'
-  dispatch();
+  dispatch(setAuth(result.data));
+  dispatch(setFromUser(result.data));
+  LocalStorage.setObj('auth', result.data);
+  LocalStorage.setObj('from', result.data);
+  setupSocket(id, dispatch);
 };
