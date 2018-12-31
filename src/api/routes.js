@@ -13,28 +13,6 @@ export default (app) => {
     res.send('Hello whatsapp clone!');
   });
 
-  app.get('/redis-test', (req, res) => {
-    redisClient.incr('inc-foo', (err, result) => {
-      if (err) {
-        console.error(err); // eslint-disable-line
-        res.status(500).send('redis increment error');
-      } else {
-        res.send(`New increment value is ${result}`);
-      }
-    });
-  });
-
-  app.get('/json-test', (req, res, next) => {
-    redisClient.incr('inc-json-test', (err, result) => {
-      if (err) {
-        next(err);
-      }
-      else {
-        res.json({ incResult: result });
-      }
-    });
-  });
-
   app.get('/setup-server-socket/:namespace/', (req, res) => {
     const { namespace } = req.params;
     sockets.setupUserNamespace('/' + namespace);
@@ -81,22 +59,13 @@ export default (app) => {
     res.send({ userNamespace, msg });
   });
 
-  app.get('/messages/:from/:to', async (req, res, next) => {
+  app.get('/messages/:from/:to', wrapAsync(async (req, res) => {
     const { from, to } = req.params;
-    const exists = await redisClient.existsAsync(redisKeys.getMessages(from, to), 0, -1).catch(err => {
-      next(err);
-    });
-    if (exists == 0) {
-      res.json(new Response().setError(`No messages between ${from} and ${to}`));
-      next();
-    }
-    const result = await redisClient.lrangeAsync(redisKeys.getMessages(from, to), 0, -1).catch(err => {
-      next(err);
-    });
-    res.json(new Response().setData(result).toJson());
-  });
+    const result = await redisClient.lrangeAsync(redisKeys.getMessages(from, to), 0, -1).catch(e => { throw new Error(e); });
+    res.json(result);
+  }));
 
-  app.post('/message/:from/:to', async (req, res, next) => {
+  app.post('/message/:from/:to', wrapAsync(async (req, res) => {
     const { from, to } = req.params;
     const { text, sendTime } = req.body;
     if (!from || !to || !text || !sendTime) {
@@ -111,16 +80,16 @@ export default (app) => {
       serverReceiveTime: Date.now()
     };
     const messageJson = JSON.stringify(messageObj);
-    await redisClient.rpushAsync(redisKeys.getMessages(from, to), messageJson).catch(err => { console.error(err); });
-    await redisClient.zaddAsync(redisKeys.getContacts(from), Date.now(), to).catch(err => { console.error(err); });
-    await redisClient.zaddAsync(redisKeys.getContacts(to), Date.now(), from).catch(err => { console.error(err); });
-    sockets.emit('receive-message', `/${to}`, messageObj); // especially test if json string can be emitted or not
+    await redisClient.rpushAsync(redisKeys.getMessages(from, to), messageJson).catch(e => { throw new Error(e); });
+    await redisClient.zaddAsync(redisKeys.getContacts(from), Date.now(), to).catch(e => { throw new Error(e); });
+    await redisClient.zaddAsync(redisKeys.getContacts(to), Date.now(), from).catch(e => { throw new Error(e); });
+    sockets.emit('receive-message', `/${to}`, messageObj); // double check that if json string can be emitted or not
     res.json(new Response().setData(messageJson).toJson());
-  });
+  }));
 
   app.get('/user/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const result = await redisClient.hgetallAsync(redisKeys.getUser(id)).catch(err => { console.error(err); });
+    const result = await redisClient.hgetallAsync(redisKeys.getUser(id)).catch(e => { throw new Error(e); });
     if (!result)
       throw new Error(`no such user: ${id}`);
     res.json(result);
@@ -128,7 +97,7 @@ export default (app) => {
 
   app.post('/auth', wrapAsync(async (req, res) => {
     const { id, password } = req.body;
-    const result = await redisClient.hgetallAsync(redisKeys.getUser(id)).catch(err => { console.error(err); });
+    const result = await redisClient.hgetallAsync(redisKeys.getUser(id)).catch(e => { throw new Error(e); });
     if (!result)
       throw new Error(`no such user: ${id}`);
     if (password !== result.password)
@@ -136,7 +105,7 @@ export default (app) => {
     res.json({ ...result });
   }));
 
-  app.post('/user/:name', wrapAsync(async (req, res, next) => {
+  app.post('/user/:name', wrapAsync(async (req, res) => {
     const { name } = req.params;
     const { password } = req.body;
     if (!name)
@@ -145,7 +114,7 @@ export default (app) => {
       throw new Error('Missing password.');
 
     const id = name === 'ben' ? 'ben' : name === 'niu' ? 'niu' : randomWords({ exactly: 2, join: '-' });
-    const result = await redisClient.existsAsync(redisKeys.getUser(id)).catch(next);
+    const result = await redisClient.existsAsync(redisKeys.getUser(id)).catch(e => { throw new Error(e); });
     if (result === 1)
       throw new Error(`user id '${id}' already exist`);
 
@@ -154,22 +123,25 @@ export default (app) => {
       'id', id,
       'name', user.name,
       'password', password,
-      'lastSeen', user.lastSeen).catch(next);
+      'lastSeen', user.lastSeen).catch(e => { throw new Error(e); });
     sockets.setupUserNamespace(id);
     res.json(user);
   }));
 
-  app.post('/namespace', (req, res) => {
+  app.post('/temp-user/:name', wrapAsync(async (req, res) => {
     const id = randomWords({ exactly: 2, join: '-' });
+    const { name } = req.params;
+    const result = await redisClient.hsetAsync(redisKeys.getUser(id), 'id', id, 'name', name).catch(e => { throw new Error(e); });
+    if (result === 0) throw new Error(`id '${id}' already exist.`);
     sockets.setupUserNamespace(id);
-    res.json(new Response().setData({ id }).toJson());
-  });
+    res.json({ id, name });
+  }));
 
-  app.get('/contacts/:id', async (req, res, next) => {
+  app.get('/contacts/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const contacts = await redisClient.zrevrangeAsync(redisKeys.getContacts(id), 0, -1).catch(err => { console.error(err); });
+    const contacts = await redisClient.zrevrangeAsync(redisKeys.getContacts(id), 0, -1).catch(e => { throw new Error(e); });
     res.json(contacts);
-  });
+  }));
 
   app.use((error, req, res, next) => {
     res.status(400).json({ message: error.message });

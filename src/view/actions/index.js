@@ -6,7 +6,7 @@ import {
   FETCH_CONTACTS, CONTACTS_READY
 } from './types';
 import { api } from './api';
-import setupSocket from '../utils/setup-socket';
+import setupClientSocket from '../utils/setup-client-socket';
 import LocalStorage from '../utils/local-storage';
 
 export const changeInput = (text) => ({
@@ -33,8 +33,6 @@ export const redirectToLogin = () => ({
 });
 
 export const setFromUser = fromUserObj => dispatch => {
-  const { id } = fromUserObj;
-  setupSocket(id, dispatch);
   dispatch({
     type: SET_FROM_USER,
     fromUserObj
@@ -109,31 +107,24 @@ export const fetchToUser = () => async (dispatch, getState) => {
 };
 
 export const fetchMessagesBetween = (from, to) => async dispatch => {
-  const response = await api.get(`/messages/${from}/${to}`);
-  if (!response.data || response.data.error)
-    return;
+  const response = await api.get(`/messages/${from}/${to}`).catch(e => { throw new Error(e); });
   dispatch({
     type: RECEIVE_MESSAGES,
-    messages: response.data.data
+    messages: response.data
   });
 };
 
 export const modalSubmit = () => async (dispatch, getState) => {
-  const result = await api.post('/namespace');
-  if (result.data.error && result.data.error.length > 0) {
-    console.error('setup socket faild');
-    return;
-  }
-  const fromUserObj = {
-    id: result.data.data.id,
-    name: getState().modal.name
-  };
+  // TODO: 換成post('/user')但是沒有password
+  const { name } = getState().modal;
+  const result = await api.post(`/temp-user/${name}`).catch(e => { throw new Error(e); });
+  const fromUserObj = { id: result.data.id, name: name };
   LocalStorage.setObj('from', fromUserObj);
-  setupSocket(result.data.data.id);
+  setupClientSocket(result.data.id, dispatch);
   dispatch(setFromUser(fromUserObj));
   dispatch(fetchToUser());
   dispatch(hideModal());
-  dispatch(contactsReady());
+  // dispatch(contactsReady());
 };
 
 export const fetchContacts = () => async (dispatch, getState) => {
