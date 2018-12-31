@@ -7,6 +7,7 @@ import Response from './response';
 import randomWords from 'random-words';
 
 const handleSecret = 'random-secret';
+const ONE_MONTH_IN_SECONDS = 60 * 60 * 24 * 30;
 
 export default (app) => {
   app.get('/', (req, res) => {
@@ -83,6 +84,14 @@ export default (app) => {
     await redisClient.rpushAsync(redisKeys.getMessages(from, to), messageJson).catch(e => { throw new Error(e); });
     await redisClient.zaddAsync(redisKeys.getContacts(from), Date.now(), to).catch(e => { throw new Error(e); });
     await redisClient.zaddAsync(redisKeys.getContacts(to), Date.now(), from).catch(e => { throw new Error(e); });
+    const isFromTemp = redisClient.sismemberAsync(redisKeys.getTempUsers(), from).catch(e => { throw new Error(e); });
+    const isToTemp = redisClient.sismemberAsync(redisKeys.getTempUsers(), from).catch(e => { throw new Error(e); });
+    if (isFromTemp || isToTemp)
+      redisClient.expire(redisKeys.getMessages(from, to), ONE_MONTH_IN_SECONDS);
+    if (isFromTemp)
+      redisClient.expireAsync(redisKeys.getContacts(from), ONE_MONTH_IN_SECONDS);
+    if (isToTemp)
+      redisClient.expireAsync(redisKeys.getContacts(to), ONE_MONTH_IN_SECONDS);
     sockets.emit('receive-message', `/${to}`, messageObj); // double check that if json string can be emitted or not
     res.json(new Response().setData(messageJson).toJson());
   }));
@@ -132,6 +141,7 @@ export default (app) => {
     const id = randomWords({ exactly: 2, join: '-' });
     const { name } = req.params;
     const result = await redisClient.hsetAsync(redisKeys.getUser(id), 'id', id, 'name', name).catch(e => { throw new Error(e); });
+    redisClient.saddAsync(redisKeys.getTempUsers(), id);
     if (result === 0) throw new Error(`id '${id}' already exist.`);
     sockets.setupUserNamespace(id);
     res.json({ id, name });

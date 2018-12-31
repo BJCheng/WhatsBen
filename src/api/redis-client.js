@@ -38,5 +38,8 @@ export const redisKeys = {
   },
   getContacts(id) {
     return `contacts:${id}`;
+  },
+  getTempUsers(){
+    return 'temp-users';
   }
 };
