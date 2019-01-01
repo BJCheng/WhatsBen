@@ -25,6 +25,7 @@ export const ON_ID_CHANGE = 'ON_ID_CHANGE';
 export const ON_PASSWORD_CHANGE = 'ON_PASSWORD_CHANGE';
 export const SWITCH_TO_SIGN_IN = 'SWITCH_TO_SIGN_IN';
 export const SWITCH_TO_CREATE_ACCOUNT = 'SWITCH_TO_CREATE_ACCOUNT';
+export const LOGIN_READY = 'LOGIN_READY';
 
 //auth
 export const SET_AUTH = 'SET_AUTH';

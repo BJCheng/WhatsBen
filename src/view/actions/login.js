@@ -1,6 +1,6 @@
 import {
-  ON_ID_CHANGE, ON_PASSWORD_CHANGE,
-  SWITCH_TO_SIGN_IN, SWITCH_TO_CREATE_ACCOUNT
+  ON_ID_CHANGE, ON_PASSWORD_CHANGE, SWITCH_TO_SIGN_IN,
+  SWITCH_TO_CREATE_ACCOUNT, LOGIN_READY
 } from '../actions/types';
 import { api, apiErrorHandler } from '../actions/api';
 import { setAuth } from './auth';
@@ -37,6 +37,11 @@ export const switchToCreateAccount = () => ({
   type: SWITCH_TO_CREATE_ACCOUNT
 });
 
+export const loginReady = (ready) => ({
+  type: LOGIN_READY,
+  ready
+});
+
 export const signIn = async (dispatch, getState) => {
   const state = getState();
   const { id, password } = state.login;
@@ -44,9 +49,14 @@ export const signIn = async (dispatch, getState) => {
     //TODO
     dispatch(renderErrorMessage(err.message));
   });
+  // console.log('!!!!!!!!!!!after post auth');
   dispatch(setAuth(result.data));
+  // console.log('!!!!!!!!!!!after set auth');
   dispatch(setFromUser(result.data));
   LocalStorage.setObj('auth', result.data);
   LocalStorage.setObj('from', result.data);
   setupClientSocket(id, dispatch);
+  // console.log('!!!!!!!!!!!finished setting local storage after post auth');
+  // console.log(`!!!!!!!!!!!from id in local storage: ${LocalStorage.getObj('from').id}`);
+  dispatch(loginReady(true));
 };

@@ -2,8 +2,7 @@ import {
   CHANGE_INPUT, APPEND_MESSAGE, CLEAR_INPUT, REDIRECT_TO_LOGIN,
   FETCH_TO_USER, SET_FROM_USER, RENDER_MODAL, MODAL_CHANGE_NAME,
   CHAT_READY, RECEIVE_MESSAGES, UPDATE_MESSAGE, RECEIVE_MESSAGE,
-  CLOSE_MODAL, SET_TO_ID, HIDE_MODAL, FROM_READY, UPDATE_CONTACT,
-  FETCH_CONTACTS, CONTACTS_READY
+  CLOSE_MODAL, SET_TO_ID, HIDE_MODAL, FROM_READY, UPDATE_CONTACT
 } from './types';
 import { api } from './api';
 import setupClientSocket from '../utils/setup-client-socket';
@@ -79,10 +78,6 @@ export const updateContact = (id) => ({
   id
 });
 
-export const contactsReady = () => ({
-  type: CONTACTS_READY
-});
-
 export const sendMessage = ({ from, to, text, sendTime }) => async (dispatch) => {
   const returnedMessage = await api.post(`/message/${from}/${to}`, { text, sendTime });
   // TODO: dispatch action to render picture of server received
@@ -125,13 +120,4 @@ export const modalSubmit = () => async (dispatch, getState) => {
   dispatch(fetchToUser());
   dispatch(hideModal());
   // dispatch(contactsReady());
-};
-
-export const fetchContacts = () => async (dispatch, getState) => {
-  const contacts = await api.get(`/contacts/${getState().from.id}`);
-  dispatch({
-    type: FETCH_CONTACTS,
-    contacts: contacts.data
-  });
-  dispatch(contactsReady());
 };
