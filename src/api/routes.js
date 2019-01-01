@@ -54,12 +54,6 @@ export default (app) => {
     res.send(decoded.handle);
   });
 
-  app.post('/send-message', (req, res) => {
-    const { userNamespace, msg } = req.body;
-    sockets.emit('receive-message', `/${userNamespace}`, msg);
-    res.send({ userNamespace, msg });
-  });
-
   app.get('/messages/:from/:to', wrapAsync(async (req, res) => {
     const { from, to } = req.params;
     const result = await redisClient.lrangeAsync(redisKeys.getMessages(from, to), 0, -1).catch(e => { throw new Error(e); });
@@ -86,13 +80,12 @@ export default (app) => {
     await redisClient.zaddAsync(redisKeys.getContacts(to), Date.now(), from).catch(e => { throw new Error(e); });
     const isFromTemp = await redisClient.sismemberAsync(redisKeys.getTempUsers(), from).catch(e => { throw new Error(e); });
     const isToTemp = await redisClient.sismemberAsync(redisKeys.getTempUsers(), to).catch(e => { throw new Error(e); });
-    console.log(`isFromTemp: ${isFromTemp}, isToTemp: ${isToTemp}`);
     if (isFromTemp === 1 || isToTemp === 1)
-      redisClient.expire(redisKeys.getMessages(from, to), 20);
+      redisClient.expire(redisKeys.getMessages(from, to), ONE_MONTH_IN_SECONDS);
     if (isFromTemp === 1)
-      redisClient.expireAsync(redisKeys.getContacts(from), 20);
+      redisClient.expireAsync(redisKeys.getContacts(from), ONE_MONTH_IN_SECONDS);
     if (isToTemp === 1)
-      redisClient.expireAsync(redisKeys.getContacts(to), 20);
+      redisClient.expireAsync(redisKeys.getContacts(to), ONE_MONTH_IN_SECONDS);
     sockets.emit('receive-message', `/${to}`, messageObj); // double check that if json string can be emitted or not
     res.json(new Response().setData(messageJson).toJson());
   }));
@@ -143,7 +136,8 @@ export default (app) => {
     const { name } = req.params;
     const result = await redisClient.hsetAsync(redisKeys.getUser(id), 'id', id, 'name', name).catch(e => { throw new Error(e); });
     redisClient.saddAsync(redisKeys.getTempUsers(), id);
-    if (result === 0) throw new Error(`id '${id}' already exist.`);
+    if (result === 0)
+      throw new Error(`id '${id}' already exist.`);
     sockets.setupUserNamespace(id);
     res.json({ id, name });
   }));
