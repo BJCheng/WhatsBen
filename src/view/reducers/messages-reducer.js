@@ -25,6 +25,9 @@ export default (state = [], action) => {
       return newState;
     }
     case RECEIVE_MESSAGE: {
+      const { from, to } = state[0] || {};
+      if (action.messageObj.from !== from && action.messageObj.from !== to)
+        return state;
       return state.concat(action.messageObj);
     }
     default: {
