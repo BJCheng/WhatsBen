@@ -1,5 +1,5 @@
 import { redisClient, redisKeys } from './redis-client';
-import { UserValidator } from '../core/user-validator';
+// import { UserValidator } from '../core/user-validator';
 import jwt from 'jsonwebtoken';
 import { sockets } from './class-setup-socket';
 import uuidv4 from 'uuid/v4';
