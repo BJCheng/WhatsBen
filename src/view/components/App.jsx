@@ -7,6 +7,7 @@ import { isObjectEmpty } from '../utils/helpers';
 import ContactsContainer from './contacts/contacts-container.jsx';
 import { setFromUser } from '../actions';
 import { loginReady } from '../actions/login';
+import Chat from './Chat.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -32,11 +33,17 @@ class App extends React.Component {
   }
 
   renderApp = () => {
-    if (this.props.loginReady) {
+    if (this.props.loginReady && this.props.to.id.length > 0) {
       return (
         <div className='app'>
           <ContactsContainer />
-          <div className='chatContainer'>chat</div>
+          <Chat />
+        </div>
+      );
+    } else if (this.props.loginReady) {
+      return (
+        <div className='app'>
+          <ContactsContainer />
         </div>
       );
     }
@@ -46,7 +53,8 @@ class App extends React.Component {
 const mapStateToProps = (state) => ({
   auth: state.auth,
   contacts: state.contacts,
-  loginReady: state.login.ready
+  loginReady: state.login.ready,
+  to: state.to
 });
 
 const mapDispatchToProps = (dispatch) => ({

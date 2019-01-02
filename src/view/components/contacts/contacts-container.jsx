@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { fetchContacts } from '../../actions/contacts';
 import Contact from './contact.jsx';
 import LocalStorage from '../../utils/local-storage';
-import { setFromUser } from '../../actions/index';
+import { setFromUser, setToId, fetchToUser, fetchMessagesBetween } from '../../actions/index';
 import { setAuth } from '../../actions/auth';
 
 class ContactsContainer extends React.Component {
@@ -17,9 +17,15 @@ class ContactsContainer extends React.Component {
   }
 
   render() {
-    return this.props.contacts.map(contact => (
-      <Contact key={contact.id} contact={contact} />
-    ));
+    return (
+      <div className='contacts-container'>
+        {
+          this.props.contacts.map(contact => (
+            <Contact key={contact.id} contact={contact} onContactClick={this.props.onContactClick} />
+          ))
+        }
+      </div>
+    );
   }
 }
 
@@ -38,6 +44,11 @@ const mapDispatchToProps = (dispatch) => ({
     // console.log(`!!!!!!!!!!!from id in local storage: ${from.id}!!!!!!!!!!!`);
   },
   fetchContacts: () => {
+  },
+  onContactClick: (selectedToId) => {
+    dispatch(setToId(selectedToId));
+    dispatch(fetchToUser());
+    dispatch(fetchMessagesBetween);
   }
 });
 

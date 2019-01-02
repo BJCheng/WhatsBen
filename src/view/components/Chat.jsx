@@ -5,6 +5,7 @@ import BodyContainer from './body/body-container.jsx';
 import FooterContainer from './footer/footer-container.jsx';
 import Modal from './Modal.jsx';
 import './styles/app.scss';
+import setupClientSocket from '../utils/setup-client-socket';
 import {
   fetchToUser, setFromUser, renderModalWithMsg,
   closeModal, modalChangeName, modalSubmit, setToId
@@ -17,8 +18,11 @@ class Chat extends React.Component {
   }
 
   componentDidMount() {
-    const { toName } = this.props.match.params;
-    this.props.setToId(toName);
+    // toId came from react-router or preset by ContactsContainer
+    if (this.props.match) {
+      const toId = this.props.match.params.toId;
+      this.props.setToId(toId);
+    }
     this.props.initiateChat();
   }
 
@@ -83,6 +87,7 @@ const mapDispatchToProps = (dispatch) => ({
       return;
     }
     dispatch(setFromUser(fromUserObj));
+    setupClientSocket(fromUserObj.id, dispatch);
     dispatch(fetchToUser());
   },
   setToId: (id) => {
