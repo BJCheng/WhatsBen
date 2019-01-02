@@ -3,6 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default class thumbnail extends React.Component {
   render() {
-    return <FontAwesomeIcon icon="user" className='thumbnail' />;
+    return <FontAwesomeIcon icon={this.props.icon} className='thumbnail' />;
   }
 }

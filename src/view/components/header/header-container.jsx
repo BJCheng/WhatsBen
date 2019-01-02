@@ -8,7 +8,7 @@ class HeaderContainer extends Component {
   render() {
     return (
       <div className='header-container'>
-        <Thumbnail />
+        <Thumbnail icon='user'/>
         <Recipient />
       </div>
     );
