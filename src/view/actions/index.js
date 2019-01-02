@@ -101,8 +101,9 @@ export const fetchToUser = () => async (dispatch, getState) => {
   }
 };
 
-export const fetchMessagesBetween = (from, to) => async dispatch => {
-  const response = await api.get(`/messages/${from}/${to}`).catch(e => { throw new Error(e); });
+export const fetchMessagesBetween = async (dispatch, getState) => {
+  const { from, to } = getState();
+  const response = await api.get(`/messages/${from.id}/${to.id}`).catch(e => { throw new Error(e); });
   dispatch({
     type: RECEIVE_MESSAGES,
     messages: response.data

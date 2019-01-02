@@ -28,8 +28,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchMessages: (from, to) => {
-    dispatch(fetchMessagesBetween(from, to));
+  fetchMessages: () => {
+    dispatch(fetchMessagesBetween);
   }
 });
 

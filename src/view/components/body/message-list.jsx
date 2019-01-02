@@ -9,8 +9,7 @@ export default class MessageList extends React.Component {
   }
 
   componentDidMount() {
-    const { from, to } = this.props;
-    this.props.fetchMessages(from.id, to.id);
+    this.props.fetchMessages();
     this.scrollToBottom('instant');
   }
 
