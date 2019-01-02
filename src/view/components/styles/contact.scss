@@ -1,23 +1,30 @@
 @import './colors.scss';
 
+.contacts-container{
+  flex-grow: 1;
+  max-width: 35em;
+}
+
 .contact{
   display: flex;
   flex-direction: row;
   min-height: 2.5em;
   max-height: 2.5em;
   align-items: center;
+  background-color: $contact-background;
+  border: solid 1px #D9DBDB;
 
   .name{
-    padding-top: 0.5em;
+    // padding-top: 0.5em;
   }
 
   .last-seen{
-    padding-top: 0.5em;
+    // padding-top: 0.5em;
     margin-left: auto;
     padding-right: 0.5em;
   }
 
   .thumbnail{
-    padding: 10px;
+    // padding: 10px;
   }
 }

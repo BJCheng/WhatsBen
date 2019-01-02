@@ -28,7 +28,7 @@ class Chat extends React.Component {
 
   render() {
     return (
-      <div style={{ height: '100%', backgroundColor: '#F2F2F2' }}>
+      <div className='chat-container'>
         {this.renderChat()}
         {this.renderModal()}
         {this.renderLoading()}
