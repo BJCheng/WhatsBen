@@ -19,6 +19,7 @@ export const FETCH_CONTACTS = 'FETCH_CONTACTS';
 export const UPDATE_CONTACT = 'UPDATE_CONTACT';
 export const LOGIN = 'LOGIN';
 export const CONTACTS_READY = 'CONTACTS_READY';
+export const SET_TO_USER = 'SET_TO_USER';
 
 // login
 export const ON_ID_CHANGE = 'ON_ID_CHANGE';

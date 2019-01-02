@@ -1,9 +1,6 @@
 import { SET_FROM_USER } from '../actions/types';
 
-const fromInitialState = {
-  name: '',
-  lastSeen: Date.now()
-};
+const fromInitialState = {};
 
 export default (state = fromInitialState, action) => {
   switch (action.type) {
