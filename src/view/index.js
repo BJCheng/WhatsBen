@@ -9,12 +9,12 @@ import App from './components/App.jsx';
 import './normalize.scss';
 import stateLogger from './reducers/middlewares/state-logger';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faGrin, faUser, faChevronCircleRight } from '@fortawesome/free-solid-svg-icons';
+import { faGrin, faUser, faChevronCircleRight, faSmile } from '@fortawesome/free-solid-svg-icons';
 import { BrowserRouter, Route } from 'react-router-dom';
 import './images/background.png';
 import thunk from 'redux-thunk';
 
-library.add(faGrin, faUser, faChevronCircleRight);
+library.add(faGrin, faUser, faChevronCircleRight, faSmile);
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 // const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
@@ -25,7 +25,7 @@ ReactDOM.render(
     <Provider store={store}>
       <div style={{ height: '100%' }}>
         <Route exact path="/" component={App} />
-        <Route exact path="/user/:toName" component={Chat} />
+        <Route exact path="/user/:toId" component={Chat} />
         <Route exact path="/login" component={Login} />
       </div>
     </Provider>
