@@ -1,0 +1,23 @@
+@import './colors.scss';
+
+.contact{
+  display: flex;
+  flex-direction: row;
+  min-height: 2.5em;
+  max-height: 2.5em;
+  align-items: center;
+
+  .name{
+    padding-top: 0.5em;
+  }
+
+  .last-seen{
+    padding-top: 0.5em;
+    margin-left: auto;
+    padding-right: 0.5em;
+  }
+
+  .thumbnail{
+    padding: 10px;
+  }
+}

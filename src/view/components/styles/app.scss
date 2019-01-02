@@ -11,14 +11,17 @@
 @import './loading-animation.scss';
 @import './modal.scss';
 @import './login.scss';
+@import './chat.scss';
+@import './contact.scss';
 
 html, body, #root {
   margin: 0;
   height: 100%;
 }
 
-.chat{
+.app{
   height: 100%;
+  background-color: red;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
