@@ -48,6 +48,9 @@ module.exports = {
     ]
   },
   plugins: [],
+  performance: {
+    hints: process.env.NODE_ENV === 'production' ? 'warning' : false
+  },
   devServer: {
     contentBase: path.join(__dirname, 'www'),
     watchContentBase: true,
