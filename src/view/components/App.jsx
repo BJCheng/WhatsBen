@@ -37,7 +37,7 @@ class App extends React.Component {
       return (
         <div className='app'>
           <ContactsContainer />
-          <Chat />
+          <Chat auth={this.props.auth}/>
         </div>
       );
     } else if (this.props.loginReady) {

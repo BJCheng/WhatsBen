@@ -79,15 +79,18 @@ const mapStateToProps = (state) => ({
   registeredUser: state.registeredUser
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch, ownProps) => ({
   initiateChat: () => {
     const fromUserObj = LocalStorage.getObj('from');
     if (!fromUserObj) {
       dispatch(renderModalWithMsg('It seems to be your first time here, please tell us your preferrable way to be called.'));
       return;
     }
-    dispatch(setFromUser(fromUserObj));
-    setupClientSocket(fromUserObj.id, dispatch);
+    // only when Chat is render by App will have auth being passed
+    if (!ownProps.auth) {
+      dispatch(setFromUser(fromUserObj));
+      setupClientSocket(fromUserObj.id, dispatch);
+    }
     dispatch(fetchToUser());
   },
   setToId: (id) => {
