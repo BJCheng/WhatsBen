@@ -6,10 +6,14 @@ export default (state = [], action) => {
     case FETCH_CONTACTS:
       return action.contacts;
     case UPDATE_CONTACT:
-      return [incomingContact].concat(state.filter(contact => contact.id !== action.id).map(contact => {
-        if (contact.id !== action.id)
-          return contact;
-      }));
+      if (incomingContact) {
+        return [incomingContact].concat(state.filter(contact => contact.id !== action.id).map(contact => {
+          if (contact.id !== action.id)
+            return contact;
+        }));
+      } else {
+        return state;
+      }
     default:
       return state;
   }
