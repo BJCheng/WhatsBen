@@ -30,7 +30,7 @@ class InputContainer extends React.Component {
 
   onClick() {
     if (this.props.text.length == 0) return;
-    this.props.sendMessage(this.props.text);
+    this.props.sendMessage(this.props.from.id, this.props.to.id, this.props.text);
   }
 }
 
