@@ -15,7 +15,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // this.props.initiateApp();
+    this.props.initiateApp();
   }
 
   render() {
@@ -61,6 +61,7 @@ const mapDispatchToProps = (dispatch) => ({
   initiateApp: () => {
     const auth = LocalStorage.getObj('auth');
     dispatch(setAuth(auth));
+    dispatch(loginReady(!isObjectEmpty(auth)));
   }
 });
 
