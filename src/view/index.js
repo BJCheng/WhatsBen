@@ -10,7 +10,7 @@ import './normalize.scss';
 import stateLogger from './reducers/middlewares/state-logger';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faGrin, faUser, faChevronCircleRight, faSmile } from '@fortawesome/free-solid-svg-icons';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { HashRouter, Route } from 'react-router-dom';
 import './images/background.png';
 import thunk from 'redux-thunk';
 
@@ -21,7 +21,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, applyMiddleware(thunk, stateLogger));
 
 ReactDOM.render(
-  <BrowserRouter>
+  <HashRouter >
     <Provider store={store}>
       <div style={{ height: '100%' }}>
         <Route exact path="/" component={App} />
@@ -29,6 +29,6 @@ ReactDOM.render(
         <Route exact path="/login" component={Login} />
       </div>
     </Provider>
-  </BrowserRouter >,
+  </HashRouter >,
   document.getElementById('root')
 );
