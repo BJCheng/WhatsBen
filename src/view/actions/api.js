@@ -1,7 +1,8 @@
 import axios from 'axios';
+import apiUrl from '../utils/api-url';
 
 export const api = axios.create({
-  baseURL: global.__apiUrl__
+  baseURL: apiUrl
 });
 
 export const apiErrorHandler = (error) => {
