@@ -16,7 +16,11 @@ class InputContainer extends React.Component {
     return (
       <div className='footer-container'>
         <Emoji click={this.props.click} />
-        <Input text={this.props.text} onChange={this.props.onChange} onEnterPress={this.onEnterPress} />
+        <Input
+          text={this.props.text}
+          onChange={this.props.onChange}
+          onEnterPress={this.onEnterPress}
+          onFocus={this.onFocus} />
         <SendButton onClick={this.onClick} />
       </div>
     );
@@ -31,6 +35,11 @@ class InputContainer extends React.Component {
   onClick() {
     if (this.props.text.length == 0) return;
     this.props.sendMessage(this.props.from.id, this.props.to.id, this.props.text);
+  }
+
+  onFocus() {
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
   }
 }
 

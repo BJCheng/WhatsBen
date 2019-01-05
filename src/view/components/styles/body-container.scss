@@ -1,12 +1,13 @@
 @import './colors.scss';
 
 .body-container{
-  background: linear-gradient(
-    rgba(229, 221, 213, 0.9), 
-    rgba(229, 221, 213, 0.9)
-  ), url(/chat-with-ben-site/build/view/images/background.png);
-  background-size: 24em;
-  background-color: $background-khaki;
+  // since background url has to be dynamically according to the environment, useing jsx in-line style instead
+  // background: linear-gradient(
+  //   rgba(229, 221, 213, 0.9), 
+  //   rgba(229, 221, 213, 0.9)
+  // ), url(/build/view/images/background.png);
+  // background-size: 24em;
+  // background-color: $background-khaki;
   overflow-y: auto;
   
   flex-grow: 1;
