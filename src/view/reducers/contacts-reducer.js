@@ -1,18 +1,15 @@
 import { FETCH_CONTACTS, UPDATE_CONTACT } from '../actions/types';
 
 export default (state = [], action) => {
-  const incomingContact = state.find(contact => contact.id === action.id);
   switch (action.type) {
     case FETCH_CONTACTS:
       return action.contacts;
     case UPDATE_CONTACT:
-      if (incomingContact) {
-        return [incomingContact].concat(state.filter(contact => contact.id !== action.id).map(contact => {
-          if (contact.id !== action.id)
-            return contact;
-        }));
+      const incomingExistingContact = state.find(contact => contact.id === action.contact.id);
+      if (incomingExistingContact) {
+        return [incomingExistingContact].concat(state.filter(contact => contact.id !== action.contact.id));
       } else {
-        return state;
+        return [action.contact].concat(state);
       }
     default:
       return state;

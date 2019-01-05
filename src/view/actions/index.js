@@ -73,9 +73,9 @@ export const hideModal = () => ({
   type: HIDE_MODAL
 });
 
-export const updateContact = (id) => ({
+export const updateContact = (fromUserObj) => ({
   type: UPDATE_CONTACT,
-  id
+  contact: fromUserObj
 });
 
 export const sendMessage = ({ from, to, text, sendTime }) => async (dispatch) => {
