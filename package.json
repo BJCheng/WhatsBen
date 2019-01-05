@@ -17,8 +17,7 @@
     "dev:view": "webpack-dev-server --watch",
     "gulp": "gulp",
     "webpack-dev-server": "webpack-dev-server --port 5000",
-    "deploy1": "npm run build-view gh-pages -src build/*",
-    "deploy": "npm run build-view && gulp gh-pages"
+    "deploy-view": "npm run build-view && gulp gh-pages"
   },
   "engines": {
     "node": "8.6.0",
