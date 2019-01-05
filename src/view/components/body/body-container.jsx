@@ -14,7 +14,7 @@ class BodyContainer extends React.Component {
 
   render() {
     const baseImgUrl = '/build/view/images/background.png';
-    const imgUrl = process.env.NODE_ENV === 'production' ? '/chat-with-ben-site' + baseImgUrl : baseImgUrl;
+    const imgUrl = process.env.NODE_ENV === 'production' ? '/chat-with-ben' + baseImgUrl : baseImgUrl;
     const style = {
       background: `linear-gradient(rgba(229, 221, 213, 0.9), rgba(229, 221, 213, 0.9)), url(${imgUrl})`,
       backgroundSize: '24em',
