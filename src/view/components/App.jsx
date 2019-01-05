@@ -33,7 +33,6 @@ class App extends React.Component {
   }
 
   renderApp = () => {
-    console.error('process.env.NODE_ENV: ', process.env.NODE_ENV);
     if (this.props.loginReady && this.props.to.id.length > 0) {
       return (
         <div className='app'>
