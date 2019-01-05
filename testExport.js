@@ -1,1 +1,0 @@
-export const test = {a: 'a', b: 'b'};
