@@ -16,7 +16,7 @@ class Sockets {
   }
 
   emit(event, namespace, data) {
-    console.log(`server emitting ${event} on ${namespace} with`, data);
+    console.log(`server emitting ${event} to ${namespace} with: `, data);
     const userSocket = this._io.of(namespace);
     userSocket.emit(event, data);
   }

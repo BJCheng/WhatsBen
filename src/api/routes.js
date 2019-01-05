@@ -78,6 +78,7 @@ export default (app) => {
     await redisClient.rpushAsync(redisKeys.getMessages(from, to), messageJson).catch(e => { throw new Error(e); });
     await redisClient.zaddAsync(redisKeys.getContacts(from), Date.now(), to).catch(e => { throw new Error(e); });
     await redisClient.zaddAsync(redisKeys.getContacts(to), Date.now(), from).catch(e => { throw new Error(e); });
+    const fromUserObj = await redisClient.hgetallAsync(redisKeys.getUser(from)).catch(e => { throw new Error(e); });
     const isFromTemp = await redisClient.sismemberAsync(redisKeys.getTempUsers(), from).catch(e => { throw new Error(e); });
     const isToTemp = await redisClient.sismemberAsync(redisKeys.getTempUsers(), to).catch(e => { throw new Error(e); });
     if (isFromTemp === 1 || isToTemp === 1)
@@ -86,7 +87,7 @@ export default (app) => {
       redisClient.expireAsync(redisKeys.getContacts(from), ONE_MONTH_IN_SECONDS);
     if (isToTemp === 1)
       redisClient.expireAsync(redisKeys.getContacts(to), ONE_MONTH_IN_SECONDS);
-    sockets.emit('receive-message', `/${to}`, messageObj); // double check that if json string can be emitted or not
+    sockets.emit('receive-message', `/${to}`, { from: fromUserObj, message: messageObj }); // double check that if json string can be emitted or not
     res.json(new Response().setData(messageJson).toJson());
   }));
 
