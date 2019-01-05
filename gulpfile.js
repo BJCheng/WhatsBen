@@ -5,6 +5,7 @@ const gulp = require('gulp');
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config.js');
 const WebpackDevServer = require('webpack-dev-server');
+const ghpages = require('gh-pages');
 
 gulp.task('build-view', function (callback) {
   let buildConfig = { ...webpackConfig };
@@ -24,7 +25,6 @@ gulp.task('build-view', function (callback) {
       callback();
     }
   });
-  // TODO: after finished webpack, push build/view/app... to chat-with-ben-site repo
 });
 
 gulp.task('view-server', function () {
@@ -38,6 +38,10 @@ gulp.task('view-server', function () {
       console.error(err);
     }
   });
+});
+
+gulp.task('gh-pages', async function () {
+  ghpages.publish('dist', function () { });
 });
 
 

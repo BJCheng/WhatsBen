@@ -9,7 +9,7 @@ module.exports = {
     index: path.join(__dirname, 'src', 'view', 'index')
   },
   output: {
-    path: path.join(__dirname, 'build', 'view'),
+    path: path.join(__dirname, 'dist', 'build', 'view'),
     publicPath: '/build/view/',
     filename: '[name].bundle.js'
   },
@@ -52,7 +52,7 @@ module.exports = {
     hints: process.env.NODE_ENV === 'production' ? 'warning' : false
   },
   devServer: {
-    contentBase: path.join(__dirname, 'www'),
+    contentBase: path.join(__dirname, 'build'),
     watchContentBase: true,
     quiet: false,
     noInfo: false,
