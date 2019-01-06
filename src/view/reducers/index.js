@@ -12,6 +12,7 @@ import contactsReducer from './contacts-reducer';
 import registeredUserReducer from './registered-user-reducer';
 import loginReducer from './login-reducer';
 import authReducer from './auth-reducer';
+import hasSetupClientSocketReducer from './has-setup-client-socket-reducer';
 
 export default combineReducers({
   header: headerReducer,
@@ -26,5 +27,6 @@ export default combineReducers({
   contacts: contactsReducer,
   registeredUser: registeredUserReducer,
   login: loginReducer,
-  auth: authReducer
+  auth: authReducer,
+  hasSetupClientSocket: hasSetupClientSocketReducer
 });

@@ -2,7 +2,8 @@ import {
   CHANGE_INPUT, APPEND_MESSAGE, CLEAR_INPUT, REDIRECT_TO_LOGIN,
   FETCH_TO_USER, SET_FROM_USER, RENDER_MODAL, MODAL_CHANGE_NAME,
   CHAT_READY, RECEIVE_MESSAGES, UPDATE_MESSAGE, RECEIVE_MESSAGE,
-  CLOSE_MODAL, SET_TO_ID, HIDE_MODAL, FROM_READY, UPDATE_CONTACT
+  CLOSE_MODAL, SET_TO_ID, HIDE_MODAL, FROM_READY, UPDATE_CONTACT,
+  HAD_SETUP_CLIENT_SOCKET
 } from './types';
 import { api } from './api';
 import setupClientSocket from '../utils/setup-client-socket';
@@ -116,9 +117,22 @@ export const modalSubmit = () => async (dispatch, getState) => {
   const result = await api.post(`/temp-user/${name}`).catch(e => { throw new Error(e); });
   const fromUserObj = { id: result.data.id, name: name };
   LocalStorage.setObj('from', fromUserObj);
-  setupClientSocket(result.data.id, dispatch);
+  dispatch(setupClientSocketAction(result.data.id));
   dispatch(setFromUser(fromUserObj));
   dispatch(fetchToUser());
   dispatch(hideModal());
   // dispatch(contactsReady());
+};
+
+export const setupClientSocketAction = (fromId) => (dispatch, getState) => {
+  const state = getState();
+  if (state.hasSetupClientSocket)
+    return;
+  setupClientSocket(fromId, dispatch);
+};
+
+export const hadSetupClientSocket = () => {
+  return {
+    type: HAD_SETUP_CLIENT_SOCKET
+  };
 };

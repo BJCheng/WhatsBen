@@ -5,7 +5,7 @@ import LocalStorage from '../utils/local-storage';
 import { setAuth } from '../actions/auth';
 import { isObjectEmpty } from '../utils/helpers';
 import ContactsContainer from './contacts/contacts-container.jsx';
-import { setFromUser } from '../actions';
+import { setFromUser, setupClientSocketAction } from '../actions';
 import { loginReady } from '../actions/login';
 import Chat from './Chat.jsx';
 
@@ -37,7 +37,7 @@ class App extends React.Component {
       return (
         <div className='app'>
           <ContactsContainer />
-          <Chat auth={this.props.auth}/>
+          <Chat auth={this.props.auth} />
         </div>
       );
     } else if (this.props.loginReady) {
@@ -62,6 +62,9 @@ const mapDispatchToProps = (dispatch) => ({
     const auth = LocalStorage.getObj('auth');
     dispatch(setAuth(auth));
     dispatch(loginReady(!isObjectEmpty(auth)));
+    if (!isObjectEmpty(auth)) {
+      dispatch(setupClientSocketAction(auth.id));
+    }
   }
 });
 

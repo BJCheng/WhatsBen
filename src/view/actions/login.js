@@ -4,9 +4,8 @@ import {
 } from '../actions/types';
 import { api, apiErrorHandler } from '../actions/api';
 import { setAuth } from './auth';
-import { setFromUser } from '.';
+import { setFromUser, setupClientSocketAction } from '.';
 import LocalStorage from '../utils/local-storage';
-import setupClientSocket from '../utils/setup-client-socket';
 
 export const onPasswordChange = (value) => ({
   type: ON_PASSWORD_CHANGE,
@@ -26,7 +25,7 @@ export const createUser = async (dispatch, getState) => {
   dispatch(setFromUser(result.data));
   LocalStorage.setObj('auth', result.data);
   LocalStorage.setObj('from', result.data);
-  setupClientSocket(id, dispatch);
+  dispatch(setupClientSocketAction(id));
 };
 
 export const switchToSignIn = () => ({
@@ -53,6 +52,6 @@ export const signIn = async (dispatch, getState) => {
   dispatch(setFromUser(result.data));
   LocalStorage.setObj('auth', result.data);
   LocalStorage.setObj('from', result.data);
-  setupClientSocket(id, dispatch);
+  dispatch(setupClientSocketAction(id));
   dispatch(loginReady(true));
 };

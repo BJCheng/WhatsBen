@@ -5,10 +5,9 @@ import BodyContainer from './body/body-container.jsx';
 import FooterContainer from './footer/footer-container.jsx';
 import Modal from './Modal.jsx';
 import './styles/app.scss';
-import setupClientSocket from '../utils/setup-client-socket';
 import {
   fetchToUser, setFromUser, renderModalWithMsg,
-  closeModal, modalChangeName, modalSubmit, setToId
+  closeModal, modalChangeName, modalSubmit, setToId, setupClientSocketAction
 } from '../actions';
 import LocalStorage from '../utils/local-storage';
 
@@ -89,7 +88,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     // only when Chat is render by App will have auth being passed
     if (!ownProps.auth) {
       dispatch(setFromUser(fromUserObj));
-      setupClientSocket(fromUserObj.id, dispatch);
+      dispatch(setupClientSocketAction(fromUserObj.id));
     }
     dispatch(fetchToUser());
   },
