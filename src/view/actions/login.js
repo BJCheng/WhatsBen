@@ -49,14 +49,10 @@ export const signIn = async (dispatch, getState) => {
     //TODO
     dispatch(renderErrorMessage(err.message));
   });
-  // console.log('!!!!!!!!!!!after post auth');
   dispatch(setAuth(result.data));
-  // console.log('!!!!!!!!!!!after set auth');
   dispatch(setFromUser(result.data));
   LocalStorage.setObj('auth', result.data);
   LocalStorage.setObj('from', result.data);
   setupClientSocket(id, dispatch);
-  // console.log('!!!!!!!!!!!finished setting local storage after post auth');
-  // console.log(`!!!!!!!!!!!from id in local storage: ${LocalStorage.getObj('from').id}`);
   dispatch(loginReady(true));
 };
