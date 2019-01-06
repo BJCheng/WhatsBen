@@ -4,4 +4,5 @@
   background-color: $background-grey;
   display: flex;
   flex-direction: row;
+  flex-shrink: 0; // body-container的flex-grow會擠壓到header跟footer
 }
