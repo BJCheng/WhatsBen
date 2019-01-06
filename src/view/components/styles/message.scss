@@ -8,6 +8,7 @@
   padding: 0em 1em;
   margin: 5px 0px;
   box-shadow: 0px 1px 0px 0px #c3c3c3;
+  position: relative;
 
   .other{
     align-self: flex-start;
@@ -17,10 +18,30 @@
   
 .from{
   @extend %message;
+  border-top-right-radius: 0px;
+  margin-right: 12px;
+}
+
+.from:after{
+  content: '';
+  position: absolute;
+  border: 4px solid red;
+  border-color: $message-green transparent transparent $message-green;
+  right: -7px;
 }
 
 .to{
   @extend %message;
-  background-color: white;
+  border-top-left-radius: 0px;
+  background-color: $message-white;
   align-self: flex-start;
+  margin-left: 12px;
+}
+
+.to:before{
+  content: '';
+  position: absolute;
+  border: 4px solid $message-white;
+  border-color: $message-white $message-white transparent transparent;
+  left: -7px;
 }
