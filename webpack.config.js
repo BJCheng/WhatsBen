@@ -52,7 +52,7 @@ module.exports = {
     hints: process.env.NODE_ENV === 'production' ? 'warning' : false
   },
   devServer: {
-    contentBase: path.join(__dirname, 'build'),
+    contentBase: path.join(__dirname, 'dist'),
     watchContentBase: true,
     quiet: false,
     noInfo: false,
