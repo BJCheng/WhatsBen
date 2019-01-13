@@ -5,6 +5,7 @@ import { sockets } from './class-setup-socket';
 import uuidv4 from 'uuid/v4';
 import Response from './response';
 import randomWords from 'random-words';
+import sendSMS from './sms';
 
 const handleSecret = 'random-secret';
 const ONE_MONTH_IN_SECONDS = 60 * 60 * 24 * 30;
@@ -81,12 +82,16 @@ export default (app) => {
     const fromUserObj = await redisClient.hgetallAsync(redisKeys.getUser(from)).catch(e => { throw new Error(e); });
     const isFromTemp = await redisClient.sismemberAsync(redisKeys.getTempUsers(), from).catch(e => { throw new Error(e); });
     const isToTemp = await redisClient.sismemberAsync(redisKeys.getTempUsers(), to).catch(e => { throw new Error(e); });
+    // expire redis objects if the user is just temprorary
     if (isFromTemp === 1 || isToTemp === 1)
       redisClient.expire(redisKeys.getMessages(from, to), ONE_MONTH_IN_SECONDS);
     if (isFromTemp === 1)
       redisClient.expireAsync(redisKeys.getContacts(from), ONE_MONTH_IN_SECONDS);
     if (isToTemp === 1)
       redisClient.expireAsync(redisKeys.getContacts(to), ONE_MONTH_IN_SECONDS);
+    // send SMS notification if it's for me
+    if (to === 'ben')
+      sendSMS(fromUserObj.name);
     sockets.emit('receive-message', `/${to}`, { from: fromUserObj, message: messageObj }); // double check that if json string can be emitted or not
     res.json(new Response().setData(messageJson).toJson());
   }));
