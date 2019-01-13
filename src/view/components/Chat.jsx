@@ -82,7 +82,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   initiateChat: () => {
     const fromUserObj = LocalStorage.getObj('from');
     if (!fromUserObj) {
-      dispatch(renderModalWithMsg('It seems to be your first time here, please enter your name.'));
+      dispatch(renderModalWithMsg('It seems to be your first time visiting, please enter your name.'));
       return;
     }
     // only when Chat is render by App will have auth being passed

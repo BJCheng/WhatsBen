@@ -12,6 +12,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faGrin, faUser, faChevronCircleRight, faSmile } from '@fortawesome/free-solid-svg-icons';
 import { HashRouter, Route } from 'react-router-dom';
 import './images/background.png';
+import './images/favicon.png';
 import thunk from 'redux-thunk';
 
 library.add(faGrin, faUser, faChevronCircleRight, faSmile);
