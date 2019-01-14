@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha ./src/**/__tests__/*.test.js --compilers js:@babel/register",
-    "build-api": "rm -Rf build/api && babel src/api -d build/api && rm -Rf build/core && babel src/core -d build/core",
+    "build-api": "rm -Rf dist/build/api && babel src/api -d dist/build/api && rm -Rf dist/build/core && babel src/core -d dist/build/core",
     "api-server": "nodemon --exec npm run babel-node src/api/api-server",
     "babel": "babel",
     "babel-node": "babel-node",
@@ -17,7 +17,8 @@
     "dev:view": "webpack-dev-server --watch",
     "gulp": "gulp",
     "webpack-dev-server": "webpack-dev-server --port 5000",
-    "deploy-view": "npm run build-view && gulp gh-pages"
+    "deploy-view": "npm run build-view && gulp gh-pages",
+    "deploy-api": "npm run build-api && exec git push heroku master"
   },
   "engines": {
     "node": "8.6.0",
