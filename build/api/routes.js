@@ -25,6 +25,8 @@ var _response = _interopRequireDefault(require("./response"));
 
 var _randomWords = _interopRequireDefault(require("random-words"));
 
+var _sms = _interopRequireDefault(require("./sms"));
+
 // import { UserValidator } from '../core/user-validator';
 var handleSecret = 'random-secret';
 var ONE_MONTH_IN_SECONDS = 60 * 60 * 24 * 30;
@@ -179,9 +181,12 @@ var _default = function _default(app) {
 
             case 21:
               isToTemp = _context2.sent;
+              // expire redis objects if the user is just temprorary
               if (isFromTemp === 1 || isToTemp === 1) _redisClient.redisClient.expire(_redisClient.redisKeys.getMessages(from, to), ONE_MONTH_IN_SECONDS);
               if (isFromTemp === 1) _redisClient.redisClient.expireAsync(_redisClient.redisKeys.getContacts(from), ONE_MONTH_IN_SECONDS);
-              if (isToTemp === 1) _redisClient.redisClient.expireAsync(_redisClient.redisKeys.getContacts(to), ONE_MONTH_IN_SECONDS);
+              if (isToTemp === 1) _redisClient.redisClient.expireAsync(_redisClient.redisKeys.getContacts(to), ONE_MONTH_IN_SECONDS); // send SMS notification if it's for me
+
+              if (to === 'ben') (0, _sms.default)(fromUserObj.name);
 
               _classSetupSocket.sockets.emit('receive-message', "/".concat(to), {
                 from: fromUserObj,
@@ -191,7 +196,7 @@ var _default = function _default(app) {
 
               res.json(new _response.default().setData(messageJson).toJson());
 
-            case 27:
+            case 28:
             case "end":
               return _context2.stop();
           }
