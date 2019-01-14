@@ -3,6 +3,7 @@
 .contacts-container{
   flex-grow: 1;
   max-width: 35em;
+  overflow-y: auto;
 }
 
 .contact{
