@@ -81,7 +81,7 @@
     "node-sass": "^4.12.0",
     "redis": "^2.8.0",
     "sass-loader": "^7.1.0",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.4.0",
     "style-loader": "^0.23.1",
     "twilio": "^3.31.1",
     "url-join": "^4.0.0",
