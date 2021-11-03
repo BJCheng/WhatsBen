@@ -85,6 +85,6 @@
     "style-loader": "^0.23.1",
     "twilio": "^3.31.1",
     "url-join": "^4.0.0",
-    "validator": "^10.10.0"
+    "validator": "^13.7.0"
   }
 }
